@@ -1,0 +1,371 @@
+openapi: 3.0.0
+info:
+  title: Web Project API
+  description: Api connect to Database
+  version: 0.0.1
+  license:
+    name: TDTU Web Project
+servers:
+  - url: http://XXXXX/v1
+    description: Develop server
+  - url: http://XXXXX.com
+    description: Product server
+paths:
+  /v1/test:
+    get:
+      tags:
+        - test
+      operationId: test
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResponse'
+
+  /v1/getProduct:
+    get:
+      tags:
+        - Product
+      summary: Api return product by id in query
+      operationId: getProduct
+      parameters:
+        - name: productId
+          required: true
+          in: query
+          schema:
+            type: string
+            pattern: '^[0-9]{1,19}$'
+            example: '123456'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductGetResponse'
+
+  /v1/searchProduct:
+    post:
+      tags:
+        - Product
+      summary: Api return list product with condition in request body
+      operationId: searchProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductSearchRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Product list form database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsSearchResponse'
+components:
+  parameters:
+    xForwardedRole:
+      in: header
+      name: x-forwarder-role
+      required: true
+      schema:
+        type: string
+    xForwardedEmployeeId:
+      in: header
+      name: x-forwarder-employee-id
+      required: true
+      schema:
+        type: string
+    xForwardedUser:
+      in: header
+      name: x-forwarder-user
+      required: true
+      schema:
+        type: string
+  schemas:
+    WebApiErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebApiErrorDetails'
+    WebApiErrorDetails:
+      type: object
+      properties:
+        field:
+          type: string
+        errorCd:
+          type: string
+        message:
+          type: string
+        errorIdList:
+          type: array
+          items:
+            type: integer
+            example: 1
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 400
+        message:
+          type: string
+
+    TestResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: object
+          properties:
+            text:
+              type: string
+              description: Na
+              example: 'xxxx'
+            resultsTotalCount:
+              description: Number of product with condition
+              type: integer
+              format: int64
+              example: 1000
+
+    ProductGetResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductResponse'
+
+    ProductResponse:
+      type: object
+      properties:
+        productId:
+          description: ID of product
+          type: string
+          example: "123456"
+        productName:
+          description: Name of product
+          type: string
+          example: 'Honda'
+        approveStatus:
+          description: Status of product
+          type: string
+          example: 'Honda'
+        amount:
+          description: Price of stock
+          type: number
+          format: double
+          example: '123456'
+        quantity:
+          description: Quantity in stock
+          type: number
+          format: double
+          example: '123456'
+        createUserId:
+          description: ID user create product
+          type: string
+          example: "123456"
+        createDatetime:
+          description: "Date time create product"
+          type: string
+          format: date-time
+          example: "2020/04/01"
+        lastupUserId:
+          description: ID user update product
+          type: string
+          example: "123456"
+        lastupDatetime:
+          description: "Last date time update product"
+          type: string
+          format: date-time
+          example: "2020/04/01"
+        isDelete:
+          description: "Is product deleted?"
+          type: boolean
+          example: false
+
+    ProductSearchRequest:
+      x-custom-validate:
+        date-range:
+          - from: 'createDatetimeFrom'
+            to: 'createDatetimeTo'
+      type: object
+      required:
+        - productId
+        - createDatetimeFrom
+        - createDatetimeTo
+      properties:
+        productId:
+          description: ID of product
+          type: string
+          example: "123456"
+          pattern: '^[0-9]{1,19}$'
+        productName:
+          description: Name of product
+          type: string
+          example: 'Honda'
+          maxLength: 20
+        offset:
+          description: The offset rows before beginning to return the rows
+          type: integer
+          format: int32
+          minimum: 0
+          example: 1
+        limit:
+          description: The number of rows
+          type: integer
+          format: int32
+          minimum: 1
+          example: 20
+        createDatetimeFrom:
+          description: "Date time create product"
+          type: string
+          format: date-time
+          example: "2020/04/01"
+        createDatetimeTo:
+          description: "Date time create product"
+          type: string
+          format: date-time
+          example: "2020/04/01"
+
+    ProductsSearchResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: object
+          properties:
+            products:
+              description: Product list
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductResponse'
+            resultsTotalCount:
+              description: Number of product with condition
+              type: integer
+              format: int64
+              example: 1000
+  responses:
+    webApiValidationError:
+      description: webApi input value validation failure
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/WebApiErrorResponse'
+            properties:
+              status:
+                example: 400
+    400:
+      description: Format check failed
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorResponse'
+            properties:
+              status:
+                example: 400
+              error:
+                example: Bad Request
+    401:
+      description: Restrict access
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorResponse'
+            properties:
+              status:
+                example: 401
+              error:
+                example: Unauthorized
+    403:
+      description: Access request denied
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorResponse'
+            properties:
+              status:
+                example: 403
+              error:
+                example: Forbidden
+    404:
+      description: Page not found
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorResponse'
+            properties:
+              status:
+                example: 404
+              error:
+                example: Not Found
+    500:
+      description: The server is having problems
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ErrorResponse'
+            properties:
+              status:
+                example: 500
+              error:
+                example: Internal Server Error
+  headers:
+    Content-Disposition:
+      schema:
+        type: string
