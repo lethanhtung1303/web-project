@@ -8,4 +8,8 @@ public class StringUtil {
         return Optional.ofNullable(number).isPresent() ?
                 String.valueOf(number) : null;
     }
+
+    public static boolean isNotNullOrEmptyString(String string){
+        return Optional.ofNullable(string).isPresent() && !string.isEmpty() && !string.isBlank();
+    }
 }

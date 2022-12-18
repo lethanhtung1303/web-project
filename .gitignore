@@ -36,6 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 /apispecs/src/main/java/
-/mbGenerator/src/main/java/com/tdtu/mbGenerator/
-/mbGenerator/src/main/resources/com/tdtu/mbGenerator/
+/mbGenerator/src/main/java/com/tdtu/mbGenerator/generate/
+/mbGenerator/src/main/resources/com/tdtu/mbGenerator/generate/
 .DS_Store

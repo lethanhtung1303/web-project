@@ -11,6 +11,10 @@ public class DateUtil {
     public static final String YYYMMDD_FORMAT_SLASH = "uuuu/MM/dd";
     public static final String DATETIME_FORMAT_SLASH = "uuuu/MM/dd HH:mm:ss";
 
+    public static LocalDateTime getTimeNow() {
+        return LocalDateTime.now();
+    }
+
     public static String getValueFromLocalDateTime(@NonNull LocalDateTime target,
                                                    @NonNull String formatter) {
         return target.format(DateTimeFormatter.ofPattern(formatter));

@@ -11,11 +11,17 @@ servers:
   - url: http://XXXXX.com
     description: Product server
 paths:
-  /v1/test:
-    get:
+  /v1/searchUser:
+    post:
       tags:
-        - test
-      operationId: test
+        - User
+      summary: Api return list user with condition in request body
+      operationId: searchUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSearchRequest'
       responses:
         400:
           $ref: '#/components/responses/webApiValidationError'
@@ -28,26 +34,81 @@ paths:
         500:
           $ref: '#/components/responses/500'
         200:
-          description: Product
+          description: User list form database
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TestResponse'
-
-  /v1/getProduct:
+                $ref: '#/components/schemas/UsersSearchResponse'
+  /v1/updateUser:
+    post:
+      tags:
+        - User
+      summary: Api for update info of user
+      operationId: updateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdateResponse'
+  /v1/createUser:
+    post:
+      tags:
+        - User
+      summary: Api for create user
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreateResponse'
+  /v1/getUser:
     get:
       tags:
-        - Product
-      summary: Api return product by id in query
-      operationId: getProduct
+        - User
+      summary: Api for create user by UserId
+      operationId: getUser
       parameters:
-        - name: productId
-          required: true
+        - name: userId
           in: query
           schema:
             type: string
             pattern: '^[0-9]{1,19}$'
             example: '123456'
+          required: true
       responses:
         400:
           $ref: '#/components/responses/webApiValidationError'
@@ -64,36 +125,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductGetResponse'
-
-  /v1/searchProduct:
-    post:
-      tags:
-        - Product
-      summary: Api return list product with condition in request body
-      operationId: searchProduct
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductSearchRequest'
-      responses:
-        400:
-          $ref: '#/components/responses/webApiValidationError'
-        401:
-          $ref: '#/components/responses/401'
-        403:
-          $ref: '#/components/responses/403'
-        404:
-          $ref: '#/components/responses/404'
-        500:
-          $ref: '#/components/responses/500'
-        200:
-          description: Product list form database
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductsSearchResponse'
+                $ref: '#/components/schemas/UserGetResponse'
 components:
   parameters:
     xForwardedRole:
@@ -149,108 +181,41 @@ components:
           example: 400
         message:
           type: string
-
-    TestResponse:
+    UserSearchRequest:
       type: object
       properties:
-        status:
-          type: integer
-          format: int32
-          example: 200
-        results:
-          type: object
-          properties:
-            text:
-              type: string
-              description: Na
-              example: 'xxxx'
-            resultsTotalCount:
-              description: Number of product with condition
-              type: integer
-              format: int64
-              example: 1000
-
-    ProductGetResponse:
-      type: object
-      properties:
-        status:
-          type: integer
-          format: int32
-          example: 200
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductResponse'
-
-    ProductResponse:
-      type: object
-      properties:
-        productId:
-          description: ID of product
+        email:
+          description: Email of user
           type: string
-          example: "123456"
-        productName:
-          description: Name of product
+          example: 'username@domain.com'
+          pattern: '^\w+([.\-]?\w+)*@\w+([.\-]?\w+)*(\.\w{2,3})+$'
+          maxLength: 200
+        stdId:
+          description: Student ID of user
           type: string
-          example: 'Honda'
-        approveStatus:
-          description: Status of product
-          type: string
-          example: 'Honda'
-        amount:
-          description: Price of stock
-          type: number
-          format: double
           example: '123456'
-        quantity:
-          description: Quantity in stock
-          type: number
-          format: double
+          maxLength: 200
+        userName:
+          description: Name of user
+          type: string
+          example: 'user'
+          maxLength: 200
+        address:
+          description: Address of user
+          type: string
+          example: '164, Tan My'
+          maxLength: 200
+        idCard:
+          description: ID Card number of user
+          type: string
           example: '123456'
-        createUserId:
-          description: ID user create product
+          maxLength: 200
+        phone:
+          description: Phone number of user
           type: string
-          example: "123456"
-        createDatetime:
-          description: "Date time create product"
-          type: string
-          format: date-time
-          example: "2020/04/01"
-        lastupUserId:
-          description: ID user update product
-          type: string
-          example: "123456"
-        lastupDatetime:
-          description: "Last date time update product"
-          type: string
-          format: date-time
-          example: "2020/04/01"
-        isDelete:
-          description: "Is product deleted?"
-          type: boolean
-          example: false
-
-    ProductSearchRequest:
-      x-custom-validate:
-        date-range:
-          - from: 'createDatetimeFrom'
-            to: 'createDatetimeTo'
-      type: object
-      required:
-        - productId
-        - createDatetimeFrom
-        - createDatetimeTo
-      properties:
-        productId:
-          description: ID of product
-          type: string
-          example: "123456"
-          pattern: '^[0-9]{1,19}$'
-        productName:
-          description: Name of product
-          type: string
-          example: 'Honda'
-          maxLength: 20
+          example: '123456'
+          pattern: '^(84|0[3|5|7|8|9])+([0-9]{8})\b$'
+          maxLength: 10
         offset:
           description: The offset rows before beginning to return the rows
           type: integer
@@ -263,18 +228,7 @@ components:
           format: int32
           minimum: 1
           example: 20
-        createDatetimeFrom:
-          description: "Date time create product"
-          type: string
-          format: date-time
-          example: "2020/04/01"
-        createDatetimeTo:
-          description: "Date time create product"
-          type: string
-          format: date-time
-          example: "2020/04/01"
-
-    ProductsSearchResponse:
+    UsersSearchResponse:
       type: object
       properties:
         status:
@@ -284,16 +238,258 @@ components:
         results:
           type: object
           properties:
-            products:
-              description: Product list
+            users:
+              description: Users list
               type: array
               items:
-                $ref: '#/components/schemas/ProductResponse'
+                $ref: '#/components/schemas/UserResponse'
             resultsTotalCount:
-              description: Number of product with condition
+              description: Number of user with condition
               type: integer
               format: int64
               example: 1000
+    UserResponse:
+      type: object
+      properties:
+        userId:
+          description: ID of user
+          type: string
+          example: '123456'
+        userName:
+          description: Name of user
+          type: string
+          example: 'user'
+        approveStatus:
+          description: Status of user
+          type: string
+          example: 'APPROVED'
+        stdId:
+          description: Student ID of user
+          type: string
+          example: '123456'
+        address:
+          description: Address of user
+          type: string
+          example: '164, Tan My'
+        idCard:
+          description: ID card of user
+          type: string
+          example: '123456'
+        fCard:
+          description: Front of the user's identity card photo
+          type: string
+          example: '123456'
+        bCard:
+          description: Back of the user's identity card photo
+          type: string
+          example: '123456'
+        portrait:
+          description: User portrait photo
+          type: string
+          example: '123456'
+        phone:
+          description: Phone of user
+          type: string
+          example: '0900000000'
+        email:
+          description: Email of user
+          type: string
+          example: '0900000000'
+        password:
+          description: Password of user
+          type: string
+          example: '************'
+        roleId:
+          description: roleId of user
+          type: string
+          example: '123456'
+        roleName:
+          description: roleName of user
+          type: string
+          example: '123456'
+        createUserId:
+          description: Id of user create
+          type: string
+          example: 'user'
+        createUserName:
+          description: Name of user create
+          type: string
+          example: 'user'
+        createDatetime:
+          description: Date time create user
+          type: string
+          example: '2020/04/01'
+        lastupUserId:
+          description: Id of user update
+          type: string
+          example: 'user'
+        lastupUserName:
+          description: Name of user update
+          type: string
+          example: 'user'
+        lastupDatetime:
+          description: Last date time update user
+          type: string
+          example: '2020/04/01'
+    UserUpdateRequest:
+      type: object
+      required:
+        - userId
+        - userName
+        - lastupUserId
+      properties:
+        userId:
+          description: ID of user
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        lastupUserId:
+          description: ID of user to create
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        stdId:
+          description: Student ID of user
+          type: string
+          example: '123456'
+          maxLength: 64
+        userName:
+          description: Name of user
+          type: string
+          example: 'user'
+          maxLength: 64
+        address:
+          description: Address of user
+          type: string
+          example: '164, Tan My'
+          maxLength: 200
+        idCard:
+          description: ID Card number of user
+          type: string
+          example: '123456'
+          maxLength: 64
+        fCard:
+          description: Front of the user's identity card photo
+          type: string
+          example: '123456'
+          maxLength: 200
+        bCard:
+          description: Back of the user's identity card photo
+          type: string
+          example: '123456'
+          maxLength: 200
+        portrait:
+          description: User portrait photo
+          type: string
+          example: '123456'
+          maxLength: 200
+    UserUpdateResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Status of the update user
+          type: string
+          example: 'OK'
+    UserCreateRequest:
+      type: object
+      required:
+        - email
+        - password
+        - roleId
+        - createUserId
+        - userName
+        - phone
+      properties:
+        email:
+          description: Email of user
+          type: string
+          example: 'username@domain.com'
+          pattern: '^\w+([.\-]?\w+)*@\w+([.\-]?\w+)*(\.\w{2,3})+$'
+          maxLength: 200
+        password:
+          description: Password of user
+          type: string
+          example: '123456'
+          minLength: 6
+          maxLength: 64
+        roleId:
+          description: ID of role
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        createUserId:
+          description: ID of user to create
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        stdId:
+          description: Student ID of user
+          type: string
+          example: '123456'
+          maxLength: 64
+        userName:
+          description: Name of user
+          type: string
+          example: 'user'
+          minLength: 1
+          maxLength: 64
+        address:
+          description: Address of user
+          type: string
+          example: '164, Tan My'
+          maxLength: 200
+        idCard:
+          description: ID Card number of user
+          type: string
+          example: '123456'
+          maxLength: 64
+        fCard:
+          description: Front of the user's identity card photo
+          type: string
+          example: '123456'
+          maxLength: 200
+        bCard:
+          description: Back of the user's identity card photo
+          type: string
+          example: '123456'
+          maxLength: 200
+        portrait:
+          description: User portrait photo
+          type: string
+          example: '123456'
+          maxLength: 200
+        phone:
+          description: Phone number of user
+          type: string
+          example: '123456'
+          pattern: '^(84|0[3|5|7|8|9])+([0-9]{8})\b$'
+          maxLength: 10
+    UserCreateResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Status of the create user
+          type: string
+          example: 'OK'
+    UserGetResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponse'
   responses:
     webApiValidationError:
       description: webApi input value validation failure

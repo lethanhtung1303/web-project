@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdtu.webproject.mybatis.mapper.UserSupportMapper">
+    <resultMap id="BaseResultMap" type="com.tdtu.webproject.mybatis.result.UserSearchResult">
+        <id column="USER_ID" jdbcType="NUMERIC" property="userId" />
+        <result column="NAME" jdbcType="VARCHAR" property="userName" />
+        <result column="APPROVE_STATUS" jdbcType="VARCHAR" property="approveStatus" />
+        <result column="STD_ID" jdbcType="VARCHAR" property="stdId" />
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+        <result column="ID_CARD" jdbcType="VARCHAR" property="idCard" />
+        <result column="F_CARD" jdbcType="VARCHAR" property="fCard" />
+        <result column="B_CARD" jdbcType="VARCHAR" property="bCard" />
+        <result column="PORTRAIT" jdbcType="VARCHAR" property="portrait" />
+        <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+        <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+        <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+        <result column="ROLE_ID" jdbcType="NUMERIC" property="roleId" />
+        <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName" />
+        <result column="CREATE_USER_ID" jdbcType="NUMERIC" property="createUserId" />
+        <result column="CREATE_DATETIME" jdbcType="TIMESTAMP" property="createDatetime" />
+        <result column="LASTUP_USER_ID" jdbcType="NUMERIC" property="lastupUserId" />
+        <result column="LASTUP_DATETIME" jdbcType="TIMESTAMP" property="lastupDatetime" />
+    </resultMap>
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT
+            USER_ID,
+            NAME,
+            APPROVE_STATUS,
+            STD_ID,
+            ADDRESS,
+            ID_CARD,
+            F_CARD,
+            B_CARD,
+            PORTRAIT,
+            PHONE,
+            EMAIL,
+            PASSWORD,
+            ROLE_ID,
+            ROLE_NAME,
+            CREATE_USER_ID,
+            CREATE_DATETIME,
+            LASTUP_USER_ID,
+            LASTUP_DATETIME
+        FROM (
+            SELECT
+                TU.USER_ID,
+                TUI.NAME,
+                TU.APPROVE_STATUS,
+                TUI.STD_ID,
+                TUI.ADDRESS,
+                TUI.ID_CARD,
+                TUI.F_CARD,
+                TUI.B_CARD,
+                TUI.PORTRAIT,
+                TUI.PHONE,
+                TU.EMAIL,
+                TU.PASSWORD,
+                TU.ROLE_ID,
+                TR.ROLE_NAME,
+                TU.CREATE_USER_ID,
+                TU.CREATE_DATETIME,
+                TUI.LASTUP_USER_ID,
+                TUI.LASTUP_DATETIME,
+                ROW_NUMBER() OVER (ORDER BY TUI.USER_ID) AS RN
+                FROM
+                    TDT_USER TU
+                INNER JOIN TDT_USER_INFO TUI
+                    ON TU.USER_ID = TUI.USER_ID
+                INNER JOIN TDT_ROLE TR
+                    ON TU.ROLE_ID = TR.ROLE_ID
+                WHERE
+                    TU.IS_DELETED = '0'
+                <if test="(userId != null and userId != '')">
+                    AND TU.USER_ID = ${userId}
+                </if>
+                <if test="(email != null and email != '')">
+                    AND UPPER(TU.EMAIL) LIKE UPPER('%${email}%')
+                </if>
+                <if test="(stdId != null and stdId != '')">
+                    AND UPPER(TUI.STD_ID) LIKE UPPER('%${stdId}%')
+                </if>
+                <if test="(userName != null and userName != '')">
+                    AND UPPER(TUI.NAME) LIKE UPPER('%${userName}%')
+                </if>
+                <if test="(address != null and address != '')">
+                    AND UPPER(TUI.ADDRESS) LIKE UPPER('%${address}%')
+                </if>
+                <if test="(idCard != null and idCard != '')">
+                    AND UPPER(TUI.ID_CARD) LIKE UPPER('%${idCard}%')
+                </if>
+                <if test="(phone != null and phone != '')">
+                    AND UPPER(TUI.PHONE) LIKE UPPER('%${phone}%')
+                </if>
+        ) Temp
+    <if test="(offset != null and limit != null)">
+        WHERE Temp.RN > #{offset}
+        AND Temp.RN <![CDATA[ <= ]]> #{offset} + #{limit}
+    </if>
+        ORDER BY USER_ID
+    </select>
+
+    <select id="count" resultType="java.lang.Long">
+        SELECT
+            COUNT(*) AS RESULTS_TOTAL_COUNT
+        FROM
+            TDT_USER TU
+        INNER JOIN TDT_USER_INFO TUI
+            ON TU.USER_ID = TUI.USER_ID
+        INNER JOIN TDT_ROLE TR
+            ON TU.ROLE_ID = TR.ROLE_ID
+        WHERE
+            TU.IS_DELETED = '0'
+        <if test="(userId != null and userId != '')">
+            AND TU.USER_ID = ${userId}
+        </if>
+        <if test="(email != null and email != '')">
+            AND UPPER(TU.EMAIL) LIKE UPPER('%${email}%')
+        </if>
+        <if test="(stdId != null and stdId != '')">
+            AND UPPER(TUI.STD_ID) LIKE UPPER('%${stdId}%')
+        </if>
+        <if test="(userName != null and userName != '')">
+            AND UPPER(TUI.NAME) LIKE UPPER('%${userName}%')
+        </if>
+        <if test="(address != null and address != '')">
+            AND UPPER(TUI.ADDRESS) LIKE UPPER('%${address}%')
+        </if>
+        <if test="(idCard != null and idCard != '')">
+            AND UPPER(TUI.ID_CARD) LIKE UPPER('%${idCard}%')
+        </if>
+        <if test="(phone != null and phone != '')">
+            AND UPPER(TUI.PHONE) LIKE UPPER('%${phone}%')
+        </if>
+    </select>
+</mapper>

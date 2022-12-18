@@ -16,8 +16,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan(basePackages = {
         "com.tdtu.webproject",
-        "com.tdtu.mbGenerator.generate.mybatis.mapper"})
-@MapperScan({"com.tdtu.mbGenerator.generate.mybatis.mapper"})
+        "com.tdtu.mbGenerator.generate.mybatis.mapper",
+        "com.tdtu.webproject.mybatis.mapper"
+})
+@MapperScan({
+        "com.tdtu.mbGenerator.generate.mybatis.mapper",
+        "com.tdtu.webproject.mybatis.mapper"
+})
 public class WebProjectApplication implements ApplicationRunner {
 
 

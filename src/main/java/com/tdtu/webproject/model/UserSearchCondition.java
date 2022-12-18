@@ -5,16 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class ProductSearchCondition {
-    private BigDecimal productId;
-    private String productName;
+public class UserSearchCondition {
+    private BigDecimal userId;
+    private String email;
+    private String stdId;
+    private String userName;
+    private String address;
+    private String idCard;
+    private String phone;
     private Integer offset;
     private Integer limit;
-    private LocalDateTime createDatetimeFrom;
-    private LocalDateTime createDatetimeTo;
 }
