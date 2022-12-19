@@ -1,7 +1,10 @@
 package com.tdtu.webproject.service;
 
+import com.tdtu.mbGenerator.generate.mybatis.model.TdtUser;
+import com.tdtu.mbGenerator.generate.mybatis.model.TdtUserInfo;
 import com.tdtu.webproject.model.UserSearchCondition;
 import com.tdtu.webproject.mybatis.result.UserSearchResult;
+import com.tdtu.webproject.repository.UserInfoRepository;
 import com.tdtu.webproject.repository.UserRepository;
 import com.tdtu.webproject.utils.ArrayUtil;
 import lombok.AllArgsConstructor;
@@ -9,19 +12,24 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class UserManageService {
     private final UserRepository userRepository;
+    private final UserInfoRepository userInfoRepository;
 
     public boolean checkExistUser(BigDecimal userId){
-        List<UserSearchResult> results = userRepository.searchUser(
-                UserSearchCondition.builder()
-                        .userId(userId)
-                        .build());
+        List<TdtUser> results = this.getAllUser().stream()
+                .filter(user -> user.getUserId().equals(userId)).toList();
         return ArrayUtil.isNotNullOrEmptyList(results);
+    }
+
+    public boolean checkExistUserInfo(BigDecimal userId){
+        TdtUserInfo results = userInfoRepository.getUserInfo(userId);
+        return Optional.ofNullable(results).isPresent();
     }
 
     public boolean validateStdId(BigDecimal userId, String stdId){
@@ -54,8 +62,12 @@ public class UserManageService {
         return ArrayUtil.isNotNullOrEmptyList(results);
     }
 
-    public List<UserSearchResult> getAllUser(){
+    public List<UserSearchResult> getAllUserResult(){
         return userRepository.searchUser(UserSearchCondition.builder().build());
+    }
+
+    public List<TdtUser> getAllUser(){
+        return userRepository.selectAll();
     }
 
     public String getUserName(List<UserSearchResult> userList, BigDecimal userId){

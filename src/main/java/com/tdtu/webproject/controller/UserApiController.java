@@ -29,6 +29,9 @@ public class UserApiController implements UserApi {
     private final UserUpdateUseCase userUpdateUseCase;
     private final UserCreateUseCase userCreateUseCase;
     private final UserGetUseCase userGetUseCase;
+    private final UserDeleteUseCase userDeleteUseCase;
+    private final ChangePassUseCase changePassUseCase;
+    private final LoginUseCase loginUseCase;
 
     @Override
     public ResponseEntity<UsersSearchResponse> searchUser(
@@ -154,6 +157,54 @@ public class UserApiController implements UserApi {
         return ResponseEntity.ok(UserGetResponse.builder()
                 .status(HttpStatus.OK.value())
                 .results(List.of(this.buildUserResponse(output)))
+                .build());
+    }
+
+    @Override
+    public ResponseEntity<UserDeleteResponse> deleteUser(
+            @NotNull @Pattern(regexp="^[0-9]{1,19}$")
+            @ApiParam(value = "", required = true)
+            @Validated
+            @RequestParam(value = "userId", required = true)
+            String userId ) {
+        return ResponseEntity.ok(UserDeleteResponse.builder()
+                .status(HttpStatus.OK.value())
+                .message(userDeleteUseCase.deleteUser(userId))
+                .build());
+    }
+
+    @Override
+    public ResponseEntity<ChangePassResponse> changePassword(
+            @ApiParam(value = "")
+            @Valid
+            @RequestBody ChangePassRequest changePassRequest,
+            BindingResult bindingResult1) {
+        ChangePassUseCaseInput input = this.buildChangePassUseCaseInput(changePassRequest);
+        return ResponseEntity.ok(ChangePassResponse.builder()
+                .status(HttpStatus.OK.value())
+                .message(changePassUseCase.changePassword(input))
+                .build());
+    }
+
+    private ChangePassUseCaseInput buildChangePassUseCaseInput(ChangePassRequest request) {
+        return ChangePassUseCaseInput.builder()
+                .userId(request.getUserId())
+                .lastupUserId(request.getLastupUserId())
+                .passwordOld(request.getPasswordOld())
+                .password(request.getPassword())
+                .passwordConfirm(request.getPasswordConfirm())
+                .build();
+    }
+
+    @Override
+    public ResponseEntity<LoginResponse> login(
+            @ApiParam(value = "")
+            @Valid
+            @RequestBody LoginRequest loginRequest,
+            BindingResult bindingResult1) throws Exception {
+        return ResponseEntity.ok(LoginResponse.builder()
+                .status(HttpStatus.OK.value())
+                .message(loginUseCase.login(loginRequest.getEmail(), loginRequest.getPassword()))
                 .build());
     }
 }

@@ -23,6 +23,7 @@ public class UserInfoRepositoryImp implements UserInfoRepository {
         TdtUserInfoExample example = new TdtUserInfoExample();
         TdtUserInfoExample.Criteria criteria = example.createCriteria();
         Optional.ofNullable(userId).ifPresent(criteria::andUserIdEqualTo);
+        criteria.andIsDeletedEqualTo(false);
         return tdtUserInfoMapper.selectByExample(example).stream()
                 .filter(tdtProduct -> tdtProduct.getUserId().equals(userId))
                 .findFirst()
@@ -41,5 +42,18 @@ public class UserInfoRepositoryImp implements UserInfoRepository {
     @Override
     public int create(TdtUserInfo record) {
         return tdtUserInfoMapper.insert(record);
+    }
+
+    @Override
+    public int delete(BigDecimal userId) {
+        TdtUserInfoExample example = new TdtUserInfoExample();
+        TdtUserInfoExample.Criteria criteria = example.createCriteria();
+        Optional.ofNullable(userId).ifPresent(criteria::andUserIdEqualTo);
+        criteria.andIsDeletedEqualTo(false);
+        return tdtUserInfoMapper.updateByExampleSelective(
+                TdtUserInfo.builder()
+                        .isDeleted(true)
+                        .build(),
+                example);
     }
 }

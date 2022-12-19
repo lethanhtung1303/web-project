@@ -8,5 +8,6 @@ public interface UserInfoRepository {
     TdtUserInfo getUserInfo(BigDecimal userId);
     int update(TdtUserInfo record, BigDecimal userId);
     int create(TdtUserInfo record);
+    int delete(BigDecimal userId);
 }
 

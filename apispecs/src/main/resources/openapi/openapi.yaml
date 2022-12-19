@@ -126,6 +126,93 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserGetResponse'
+  /v1/deleteUser:
+    delete:
+      tags:
+        - User
+      summary: Api for delete user
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: string
+            pattern: '^[0-9]{1,19}$'
+            example: '123456'
+          required: true
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDeleteResponse'
+  /v1/changePassword:
+    post:
+      tags:
+        - User
+      summary: Api for change password user
+      operationId: changePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePassRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangePassResponse'
+  /v1/login:
+    post:
+      tags:
+        - User
+      summary: Api for login
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
 components:
   parameters:
     xForwardedRole:
@@ -490,6 +577,94 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UserResponse'
+    UserDeleteResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Status of the delete user
+          type: string
+          example: 'OK'
+    ChangePassRequest:
+      type: object
+      required:
+        - userId
+        - passwordOld
+        - password
+        - passwordConfirm
+        - lastupUserId
+      properties:
+        userId:
+          description: ID of user
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        lastupUserId:
+          description: ID of user to create
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        passwordOld:
+          description: Password of user
+          type: string
+          example: '123456'
+          minLength: 6
+          maxLength: 64
+        password:
+          description: Password of user
+          type: string
+          example: '123456'
+          minLength: 6
+          maxLength: 64
+        passwordConfirm:
+          description: Password of user
+          type: string
+          example: '123456'
+          minLength: 6
+          maxLength: 64
+    ChangePassResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Status of the change pass
+          type: string
+          example: 'OK'
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          description: Email of user
+          type: string
+          example: 'username@domain.com'
+          pattern: '^\w+([.\-]?\w+)*@\w+([.\-]?\w+)*(\.\w{2,3})+$'
+          maxLength: 200
+        password:
+          description: Password of user
+          type: string
+          example: '123456'
+          minLength: 6
+          maxLength: 64
+    LoginResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Status of the login
+          type: string
+          example: 'OK'
   responses:
     webApiValidationError:
       description: webApi input value validation failure

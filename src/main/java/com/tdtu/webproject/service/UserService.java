@@ -8,10 +8,13 @@ import com.tdtu.webproject.model.*;
 import com.tdtu.webproject.mybatis.result.UserSearchResult;
 import com.tdtu.webproject.repository.UserInfoRepository;
 import com.tdtu.webproject.repository.UserRepository;
+import com.tdtu.webproject.utils.ArrayUtil;
 import com.tdtu.webproject.utils.DateUtil;
 import com.tdtu.webproject.utils.NumberUtil;
 import com.tdtu.webproject.utils.StringUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -28,6 +31,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
     private final UserManageService userManageService;
+    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public Long count(UserSearchRequest request) {
         return userRepository.countUser(this.buildUserSearchCondition(request));
@@ -57,7 +61,7 @@ public class UserService {
     }
 
     private UserSearchResponse buildUserSearchResponse(UserSearchResult result) {
-        List<UserSearchResult> userList = userManageService.getAllUser();
+        List<UserSearchResult> userList = userManageService.getAllUserResult();
         BigDecimal createUserId = result.getCreateUserId();
         LocalDateTime createDatetime = result.getCreateDatetime();
         BigDecimal lastupUserId = result.getLastupUserId();
@@ -205,12 +209,96 @@ public class UserService {
         return TdtUser.builder()
                 .userId(userId)
                 .email(request.getEmail())
-                .password(request.getPassword())
+                .password(this.encodePassword(request.getPassword()))
                 .roleId(NumberUtil.toBigDeimal(request.getRoleId()).orElse(null))
                 .approveStatus(Const.UNAPPROVE)
                 .isDeleted(false)
                 .createUserId(request.getCreateUserId())
                 .createDatetime(DateUtil.getTimeNow())
                 .build();
+    }
+
+    private String encodePassword(String pass){
+        return encoder.encode(pass);
+    }
+
+    public String deleteUser(String userId) {
+        BigDecimal id = NumberUtil.toBigDeimal(userId).orElse(null);
+        if (Optional.ofNullable(userId).isPresent()){
+            if (!userManageService.checkExistUser(id) && !userManageService.checkExistUserInfo(id)){
+                throw new BusinessException("Not found user!");
+            }
+            return userRepository.delete(id) > 0 && userInfoRepository.delete(id) > 0
+                    ? Const.SUCCESSFUL
+                    : Const.FAIL;
+        }
+        return Const.FAIL;
+    }
+
+    public String changePassword(ChangePassRequest request) {
+        if (!request.getPassword().equals(request.getPasswordConfirm())){
+            throw new BusinessException("Password and Password Confirm don't match");
+        }
+        BigDecimal userId = NumberUtil.toBigDeimal(request.getUserId()).orElse(null);
+        if (Optional.ofNullable(userId).isPresent()){
+            if (!userManageService.checkExistUser(userId)){
+                throw new BusinessException("Not found user!");
+            }
+            List<TdtUser> userList = userManageService.getAllUser();
+            TdtUser userOld = ArrayUtil.isNotNullOrEmptyList(userList)
+                    ? userManageService.getAllUser().stream()
+                    .filter(u -> u.getUserId().equals(userId))
+                    .findFirst()
+                    .orElse(null)
+                    : null;
+            if (Optional.ofNullable(userOld).isPresent()){
+                if (!encoder.matches(request.getPasswordOld(), userOld.getPassword())){
+                    throw new BusinessException("Password don't match");
+                }
+            }
+            TdtUser user = this.buildTdtUser(userId, this.encodePassword(request.getPassword()),
+                    request.getLastupUserId());
+            return Optional.ofNullable(user).isPresent()
+                    ? userRepository.changePassword(user, userId) > 0
+                        ? Const.SUCCESSFUL
+                        : Const.FAIL
+                    : Const.FAIL;
+        }
+        return Const.FAIL;
+    }
+
+    private TdtUser buildTdtUser(BigDecimal userId, String password, String lastupUserId){
+        TdtUser user = userRepository.getUser(userId);
+        return Optional.ofNullable(user)
+                .map(i -> TdtUser.builder()
+                        .userId(i.getUserId())
+                        .email(i.getEmail())
+                        .password(password)
+                        .roleId(i.getRoleId())
+                        .approveStatus(i.getApproveStatus())
+                        .isDeleted(i.getIsDeleted())
+                        .createUserId(i.getCreateUserId())
+                        .createDatetime(i.getCreateDatetime())
+                        .lastupUserId(lastupUserId)
+                        .lastupDatetime(DateUtil.getTimeNow())
+                        .build())
+                .orElse(null);
+    }
+
+    public String login(String email, String password) {
+        List<TdtUser> userList = userManageService.getAllUser();
+        TdtUser user = ArrayUtil.isNotNullOrEmptyList(userList)
+                ? userManageService.getAllUser().stream()
+                    .filter(u -> u.getEmail().equals(email))
+                    .findFirst()
+                    .orElse(null)
+                : null;
+        if (Optional.ofNullable(user).isEmpty()){
+            throw new BusinessException(Const.FAIL);
+        }
+        if (!encoder.matches(password, user.getPassword())){
+            throw new BusinessException("Password don't match");
+        }
+        return Const.SUCCESSFUL;
     }
 }
