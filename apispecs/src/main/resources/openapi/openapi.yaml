@@ -213,12 +213,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginResponse'
-  /v1/getAllTypeProperty:
+  /v1/getAllPropertyType:
     get:
       tags:
         - Property
       summary: Api for get all type of property
-      operationId: getAllTypeProperty
+      operationId: getAllPropertyType
       responses:
         400:
           $ref: '#/components/responses/webApiValidationError'
@@ -235,7 +235,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AllTypePropertyResponse'
+                $ref: '#/components/schemas/AllPropertyTypeResponse'
   /v1/searchProperty:
     post:
       tags:
@@ -716,7 +716,7 @@ components:
           description: Status of the login
           type: string
           example: 'OK'
-    AllTypePropertyResponse:
+    AllPropertyTypeResponse:
       type: object
       properties:
         status:
@@ -735,9 +735,19 @@ components:
               description: List of name type property
               type: array
               items:
-                description: Name of property type
-                type: string
-                example: 'xxxxxx'
+                $ref: '#/components/schemas/PropertyTypeResponse'
+    PropertyTypeResponse:
+      type: object
+      properties:
+        nameProperty:
+          description: Name type type property
+          type: string
+          example: '123456'
+        totalProperty:
+          description: Number of property with type
+          type: integer
+          format: int64
+          example: 1000
     SearchPropertyRequest:
       x-custom-validate:
         date-range:

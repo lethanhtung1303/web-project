@@ -1,10 +1,7 @@
 package com.tdtu.webproject.controller;
 
-import com.tdtu.webproject.usecase.PropertySearchUseCase;
-import com.tdtu.webproject.usecase.PropertySearchUseCaseInput;
-import com.tdtu.webproject.usecase.PropertySearchUseCaseOutput;
+import com.tdtu.webproject.usecase.*;
 import com.tdtu.webproject.usecase.PropertySearchUseCaseOutput.PropertySearchUseCaseResults;
-import com.tdtu.webproject.usecase.TypePropertyGetAllUseCase;
 import generater.openapi.api.PropertyApi;
 import generater.openapi.model.*;
 import io.swagger.annotations.ApiParam;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -25,18 +21,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PropertyApiController implements PropertyApi {
 
-    private final TypePropertyGetAllUseCase typePropertyGetAllUseCase;
+    private final PropertyTypeGetAllUseCase typePropertyGetAllUseCase;
     private final PropertySearchUseCase propertySearchUseCase;
 
     @Override
-    public ResponseEntity<AllTypePropertyResponse> getAllTypeProperty() {
+    public ResponseEntity<AllPropertyTypeResponse> getAllPropertyType() {
 
-        List<String> output = typePropertyGetAllUseCase.getAllTypeProperty();
-        return ResponseEntity.ok(AllTypePropertyResponse.builder()
+        PropertyTypeUseCaseOutput output = typePropertyGetAllUseCase.getAllTypeProperty();
+        return ResponseEntity.ok(AllPropertyTypeResponse.builder()
                 .status(HttpStatus.OK.value())
-                .results(AllTypePropertyResponseResults.builder()
-                        .typeProperties(output)
-                        .resultsTotalCount(Long.valueOf(output.size()))
+                .results(AllPropertyTypeResponseResults.builder()
+                        .typeProperties(output.getTypeProperties().stream()
+                                .map(typeProperty -> PropertyTypeResponse.builder()
+                                        .nameProperty(typeProperty.getNameProperty())
+                                        .totalProperty(typeProperty.getTotalProperty())
+                                        .build())
+                                .collect(Collectors.toList()))
+                        .resultsTotalCount(output.getResultsTotalCount())
                         .build())
                 .build());
     }

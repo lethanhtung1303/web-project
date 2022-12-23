@@ -4,8 +4,9 @@ import com.tdtu.mbGenerator.generate.mybatis.model.TdtPropertyType;
 
 import java.util.List;
 
-public interface TypePropertyRepository {
+public interface PropertyTypeRepository {
 
     List<TdtPropertyType> selectAll();
+    Long countAll();
 }
 

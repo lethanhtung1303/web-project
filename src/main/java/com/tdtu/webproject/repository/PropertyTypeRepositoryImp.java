@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 @AllArgsConstructor
 @ComponentScan
-public class TypePropertyRepositoryImp implements TypePropertyRepository {
+public class PropertyTypeRepositoryImp implements PropertyTypeRepository {
     private final TdtPropertyTypeMapper tdtTypePropertyMapper;
     @Override
     public List<TdtPropertyType> selectAll() {
@@ -21,5 +21,13 @@ public class TypePropertyRepositoryImp implements TypePropertyRepository {
         TdtPropertyTypeExample.Criteria criteria = example.createCriteria();
         criteria.andIsDeletedEqualTo(false);
         return tdtTypePropertyMapper.selectByExample(example);
+    }
+
+    @Override
+    public Long countAll() {
+        TdtPropertyTypeExample example = new TdtPropertyTypeExample();
+        TdtPropertyTypeExample.Criteria criteria = example.createCriteria();
+        criteria.andIsDeletedEqualTo(false);
+        return tdtTypePropertyMapper.countByExample(example);
     }
 }
