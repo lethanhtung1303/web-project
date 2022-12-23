@@ -40,12 +40,6 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-bootJar {
-    if (project.hasProperty('buildProfile') && project.buildProfile.equalsIgnoreCase('dev')) {
-        println project.buildProfile
-        archiveFileName = "${archiveBaseName.get()}-${project.version}-dev.${archiveExtension.get()}"
-    } else {
-        println 'No buildProfile'
-        archiveFileName = "${archiveBaseName.get()}-${project.version}.${archiveExtension.get()}"
-    }
+bootRun.doFirst {
+    delete "${rootDir}/bin"
 }

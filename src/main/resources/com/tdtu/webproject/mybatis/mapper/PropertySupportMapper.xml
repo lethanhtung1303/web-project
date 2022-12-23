@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdtu.webproject.mybatis.mapper.PropertySupportMapper">
+    <resultMap id="BaseResultMap" type="com.tdtu.webproject.mybatis.result.PropertySearchResult">
+        <id column="PROPERTY_ID" jdbcType="NUMERIC" property="propertyId" />
+        <result column="TYPE_ID" jdbcType="NUMERIC" property="typeId" />
+        <result column="NAME" jdbcType="VARCHAR" property="typeName" />
+        <result column="CREATE_USER_ID" jdbcType="NUMERIC" property="createUserId" />
+        <result column="CREATE_DATETIME" jdbcType="TIMESTAMP" property="createDatetime" />
+        <result column="LASTUP_USER_ID" jdbcType="NUMERIC" property="lastupUserId" />
+        <result column="LASTUP_DATETIME" jdbcType="TIMESTAMP" property="lastupDatetime" />
+        <result column="TITLE" jdbcType="VARCHAR" property="title" />
+        <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+        <result column="AMOUNT" jdbcType="NUMERIC" property="amount" />
+        <result column="AREA" jdbcType="NUMERIC" property="area" />
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+        <result column="APPROVE_STATUS" jdbcType="VARCHAR" property="approveStatus" />
+    </resultMap>
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT
+            PROPERTY_ID,
+            TYPE_ID,
+            NAME,
+            CREATE_USER_ID,
+            CREATE_DATETIME,
+            LASTUP_USER_ID,
+            LASTUP_DATETIME,
+            TITLE,
+            ADDRESS,
+            AMOUNT,
+            AREA,
+            DESCRIPTION,
+            APPROVE_STATUS
+        FROM (
+            SELECT
+                TP.PROPERTY_ID,
+                TP.TYPE_ID,
+                TTP.NAME,
+                TP.CREATE_USER_ID,
+                TP.CREATE_DATETIME,
+                TP.LASTUP_USER_ID,
+                TP.LASTUP_DATETIME,
+                TPI.TITLE,
+                TPI.ADDRESS,
+                TPI.AMOUNT,
+                TPI.AREA,
+                TPI.DESCRIPTION,
+                TPI.APPROVE_STATUS,
+                ROW_NUMBER() OVER (ORDER BY TP.PROPERTY_ID) AS RN
+                FROM
+                    TDT_PROPERTY TP
+                INNER JOIN TDT_PROPERTY_INFO TPI
+                    ON TP.PROPERTY_ID = TPI.PROPERTY_ID
+                INNER JOIN TDT_PROPERTY_TYPE TTP
+                    ON TTP.TYPE_ID = TP.TYPE_ID
+                WHERE
+                    TP.IS_DELETED = '0'
+                <if test="(userId != null and userId != '')">
+                    AND TU.USER_ID = ${userId}
+                </if>
+                <if test="(typeId != null and typeId != '')">
+                    AND TP.TYPE_ID = ${typeId}
+                </if>
+                <if test="(title != null and title != '')">
+                    AND UPPER(TPI.TITLE) LIKE UPPER('%${title}%')
+                </if>
+                <if test="(address != null and address != '')">
+                    AND UPPER(TPI.ADDRESS) LIKE UPPER('%${address}%')
+                </if>
+                <choose>
+                    <when test="createDatetimeFrom != null and createDatetimeTo != null">
+                        and TP.CREATE_DATETIME BETWEEN #{createDatetimeFrom} AND #{createDatetimeTo}
+                    </when>
+                    <when test="createDatetimeFrom != null">
+                        and TP.CREATE_DATETIME >= #{createDatetimeFrom}
+                    </when>
+                    <when test="createDatetimeTo != null">
+                        and TP.CREATE_DATETIME <![CDATA[ <= ]]> #{createDatetimeTo}
+                    </when>
+                </choose>
+                <choose>
+                    <when test="amountFrom != null and amountTo != null">
+                        and TPI.AMOUNT BETWEEN #{amountFrom} AND #{amountTo}
+                    </when>
+                    <when test="amountFrom != null">
+                        and TPI.AMOUNT >= #{amountFrom}
+                    </when>
+                    <when test="amountTo != null">
+                        and TPI.AMOUNT <![CDATA[ <= ]]> #{amountTo}
+                    </when>
+                </choose>
+                <choose>
+                    <when test="areaFrom != null and areaTo != null">
+                        and TPI.AREA BETWEEN #{areaFrom} AND #{areaTo}
+                    </when>
+                    <when test="areaFrom != null">
+                        and TPI.AREA >= #{areaFrom}
+                    </when>
+                    <when test="amountTo != null">
+                        and TPI.AREA <![CDATA[ <= ]]> #{areaTo}
+                    </when>
+                </choose>
+        ) Temp
+    <if test="(offset != null and limit != null)">
+        WHERE Temp.RN > #{offset}
+        AND Temp.RN <![CDATA[ <= ]]> #{offset} + #{limit}
+    </if>
+        ORDER BY PROPERTY_ID
+    </select>
+
+    <select id="count" resultType="java.lang.Long">
+        SELECT
+            COUNT(*) AS RESULTS_TOTAL_COUNT
+        FROM
+            TDT_PROPERTY TP
+        INNER JOIN TDT_PROPERTY_INFO TPI
+            ON TP.PROPERTY_ID = TPI.PROPERTY_ID
+        INNER JOIN TDT_PROPERTY_TYPE TTP
+            ON TTP.TYPE_ID = TP.TYPE_ID
+        WHERE
+            TP.IS_DELETED = '0'
+        <if test="(userId != null and userId != '')">
+            AND TU.USER_ID = ${userId}
+        </if>
+        <if test="(typeId != null and typeId != '')">
+            AND TP.TYPE_ID = ${typeId}
+        </if>
+        <if test="(title != null and title != '')">
+            AND UPPER(TPI.TITLE) LIKE UPPER('%${title}%')
+        </if>
+        <if test="(address != null and address != '')">
+            AND UPPER(TPI.ADDRESS) LIKE UPPER('%${address}%')
+        </if>
+        <choose>
+            <when test="createDatetimeFrom != null and createDatetimeTo != null">
+                and TP.CREATE_DATETIME BETWEEN #{createDatetimeFrom} AND #{createDatetimeTo}
+            </when>
+            <when test="createDatetimeFrom != null">
+                and TP.CREATE_DATETIME >= #{createDatetimeFrom}
+            </when>
+            <when test="createDatetimeTo != null">
+                and TP.CREATE_DATETIME <![CDATA[ <= ]]> #{createDatetimeTo}
+            </when>
+        </choose>
+        <choose>
+            <when test="amountFrom != null and amountTo != null">
+                and TPI.AMOUNT BETWEEN #{amountFrom} AND #{amountTo}
+            </when>
+            <when test="amountFrom != null">
+                and TPI.AMOUNT >= #{amountFrom}
+            </when>
+            <when test="amountTo != null">
+                and TPI.AMOUNT <![CDATA[ <= ]]> #{amountTo}
+            </when>
+        </choose>
+        <choose>
+            <when test="areaFrom != null and areaTo != null">
+                and TPI.AREA BETWEEN #{areaFrom} AND #{areaTo}
+            </when>
+            <when test="areaFrom != null">
+                and TPI.AREA >= #{areaFrom}
+            </when>
+            <when test="amountTo != null">
+                and TPI.AREA <![CDATA[ <= ]]> #{areaTo}
+            </when>
+        </choose>
+    </select>
+</mapper>

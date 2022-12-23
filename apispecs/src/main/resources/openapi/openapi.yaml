@@ -213,6 +213,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginResponse'
+  /v1/getAllTypeProperty:
+    get:
+      tags:
+        - Property
+      summary: Api for get all type of property
+      operationId: getAllTypeProperty
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: All Type Name Of Property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AllTypePropertyResponse'
+  /v1/searchProperty:
+    post:
+      tags:
+        - Property
+      summary: Api for search property
+      operationId: searchProperty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchPropertyRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Search property in data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchPropertyResponse'
 components:
   parameters:
     xForwardedRole:
@@ -665,6 +716,187 @@ components:
           description: Status of the login
           type: string
           example: 'OK'
+    AllTypePropertyResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: object
+          properties:
+            resultsTotalCount:
+              description: Number of user with condition
+              type: integer
+              format: int64
+              example: 1000
+            typeProperties:
+              description: List of name type property
+              type: array
+              items:
+                description: Name of property type
+                type: string
+                example: 'xxxxxx'
+    SearchPropertyRequest:
+      x-custom-validate:
+        date-range:
+          - from: 'createDatetimeFrom'
+            to: 'createDatetimeTo'
+      type: object
+      properties:
+        userId:
+          description: ID of property
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        typeId:
+          description: Type ID of property
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        title:
+          description: Title of property
+          type: string
+          example: '123456'
+          maxLength: 200
+        address:
+          description: Address of property
+          type: string
+          example: '123456'
+          maxLength: 200
+        createDatetimeFrom:
+          description: Date time create product
+          type: string
+          example: '123456'
+          pattern: '^(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))\/(0[1-9]|1[0-2])\/([12]\d{3})$'
+        createDatetimeTo:
+          description: Date time create product
+          type: string
+          example: '123456'
+          pattern: '^(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))\/(0[1-9]|1[0-2])\/([12]\d{3})$'
+        amountFrom:
+          description: Amount of property
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,9}$'
+        amountTo:
+          description: Amount of property
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,9}$'
+        areaFrom:
+          description: Area of property
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,9}$'
+        areaTo:
+          description: Area of property
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,9}$'
+        offset:
+          description: The offset rows before beginning to return the rows
+          type: integer
+          format: int32
+          minimum: 0
+          example: 1
+        limit:
+          description: The number of rows
+          type: integer
+          format: int32
+          minimum: 1
+          example: 20
+    SearchPropertyResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: object
+          properties:
+            resultsTotalCount:
+              description: Number of property with condition
+              type: integer
+              format: int64
+              example: 1000
+            properties:
+              description: Property list
+              type: array
+              items:
+                $ref: '#/components/schemas/PropertyResponse'
+    PropertyResponse:
+      type: object
+      properties:
+        propertyId:
+          description: ID of property
+          type: string
+          example: '123456'
+        typeId:
+          description: ID of type property
+          type: string
+          example: '123456'
+        typeName:
+          description: Name of type property
+          type: string
+          example: 'xxxxx'
+        createUserId:
+          description: ID of user create property
+          type: string
+          example: '123456'
+        createUserName:
+          description: Name of user create property
+          type: string
+          example: 'xxxxx'
+        createDatetime:
+          description: Date-time create property
+          type: string
+          example: '2022-12-20 00:00:00'
+        lastupUserId:
+          description: ID of user lastup property
+          type: string
+          example: '123456'
+        lastupUserName:
+          description: Name of user lastup property
+          type: string
+          example: 'xxxxx'
+        lastupDatetime:
+          description: Date-time lastup property
+          type: string
+          example: '2022-12-20 00:00:00'
+        title:
+          description: title of property
+          type: string
+          example: '2022-12-20 00:00:00'
+        address:
+          description: Address of property
+          type: string
+          example: 'Ho Chi Minh'
+        amount:
+          description: Amount of property
+          type: string
+          example: '1000000'
+        area:
+          description: Area of property
+          type: string
+          example: '10'
+        description:
+          description: Description of property
+          type: string
+          example: 'xxxxx'
+        approveStatus:
+          description: Approve Status of property
+          type: string
+          example: 'APPROVE'
+        propertyImg:
+          description: List of IMG property
+          type: array
+          items:
+            description: Link of img property
+            type: string
+            example: 'xxxxxx'
   responses:
     webApiValidationError:
       description: webApi input value validation failure
