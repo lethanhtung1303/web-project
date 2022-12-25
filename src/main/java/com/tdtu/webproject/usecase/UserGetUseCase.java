@@ -51,6 +51,6 @@ public class UserGetUseCase {
                         .lastupUserName(user.getLastupUserName())
                         .lastupDatetime(user.getLastupDatetime())
                         .build())
-                .orElse(UserSearchUseCaseResults.builder().build());
+                .orElse(null);
     }
 }

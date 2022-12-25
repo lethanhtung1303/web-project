@@ -171,11 +171,11 @@ public class UserService {
         }
         if (Optional.ofNullable(userId).isPresent()){
             if (userManageService.checkExistUser(userId)){
-                throw new BusinessException("Not found user!");
+                throw new BusinessException("User already exists in the system!");
             }
             TdtUser tdtUser = this.buildTdtUserForCreate(userId, request);
             TdtUserInfo tdtUserInfo = this.buildTdtUserInfoForCreate(userId, request);
-            return userRepository.create(tdtUser) > 0 && userInfoRepository.create(tdtUserInfo) > 0
+            return (userRepository.create(tdtUser) > 0 && userInfoRepository.create(tdtUserInfo) > 0)
                     ? Const.SUCCESSFUL
                     : Const.FAIL;
         }

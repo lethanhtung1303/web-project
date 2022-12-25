@@ -99,7 +99,7 @@ paths:
     get:
       tags:
         - User
-      summary: Api for create user by UserId
+      summary: Api for get user by UserId
       operationId: getUser
       parameters:
         - name: userId
@@ -264,6 +264,124 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchPropertyResponse'
+  /v1/createProperty:
+    post:
+      tags:
+        - Property
+      summary: Api for create property
+      operationId: createProperty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyCreateRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyCreateResponse'
+  /v1/updateProperty:
+    post:
+      tags:
+        - Property
+      summary: Api for update info of Property
+      operationId: updateProperty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyUpdateRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update Property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyUpdateResponse'
+  /v1/deleteProperty:
+    delete:
+      tags:
+        - Property
+      summary: Api for delete property
+      operationId: deleteProperty
+      parameters:
+        - name: propertyId
+          in: query
+          schema:
+            type: string
+            pattern: '^[0-9]{1,19}$'
+            example: '123456'
+          required: true
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyDeleteResponse'
+  /v1/getProperty:
+    get:
+      tags:
+        - Property
+      summary: Api for get Property by PropertyId
+      operationId: getProperty
+      parameters:
+        - name: propertyId
+          in: query
+          schema:
+            type: string
+            pattern: '^[0-9]{1,19}$'
+            example: '123456'
+          required: true
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropertyGetResponse'
 components:
   parameters:
     xForwardedRole:
@@ -907,6 +1025,174 @@ components:
             description: Link of img property
             type: string
             example: 'xxxxxx'
+    PropertyCreateRequest:
+      type: object
+      required:
+        - typeId
+        - createUserId
+        - title
+        - address
+        - amount
+        - area
+        - description
+        - propertyImg
+      properties:
+        typeId:
+            description: ID of type property
+            type: string
+            example: '123456'
+            pattern: '^[0-9]{1,19}$'
+        createUserId:
+            description: ID of user create property
+            type: string
+            example: '123456'
+            pattern: '^[0-9]{1,19}$'
+        title:
+          description: Title of property
+          type: string
+          example: 'xxxxx'
+          maxLength: 200
+        address:
+          description: Address of property
+          type: string
+          example: 'xxxxx'
+          maxLength: 200
+        amount:
+          description: Amount of property
+          type: string
+          example: '100000'
+          pattern: '^[0-9]{1,9}$'
+          maxLength: 9
+        area:
+          description: Area of property
+          type: string
+          example: '100000'
+          pattern: '^[0-9]{1,9}$'
+          maxLength: 9
+        description:
+          description: Description of property
+          type: string
+          example: 'xxxxx'
+          maxLength: 40000
+        propertyImg:
+          description: Image list
+          type: array
+          minItems: 3
+          maxItems: 12
+          items:
+            description: Link of image
+            type: string
+            example: 'xxxxx'
+            maxLength: 200
+    PropertyCreateResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Status of the create property
+          type: string
+          example: 'OK'
+    PropertyUpdateRequest:
+      type: object
+      required:
+        - propertyId
+        - typeId
+        - title
+        - address
+        - amount
+        - area
+        - description
+        - propertyImg
+        - lastupUserId
+      properties:
+        propertyId:
+          description: ID of user
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        typeId:
+          description: ID of user
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        title:
+          description: Title of property
+          type: string
+          example: 'xxxxx'
+          maxLength: 200
+        address:
+          description: Address of property
+          type: string
+          example: 'xxxxx'
+          maxLength: 200
+        amount:
+          description: Amount of property
+          type: string
+          example: '100000'
+          pattern: '^[0-9]{1,9}$'
+          maxLength: 9
+        area:
+          description: Area of property
+          type: string
+          example: '100000'
+          pattern: '^[0-9]{1,9}$'
+          maxLength: 9
+        description:
+          description: Description of property
+          type: string
+          example: 'xxxxx'
+          maxLength: 40000
+        propertyImg:
+          description: Image list
+          type: array
+          minItems: 3
+          maxItems: 12
+          items:
+            description: Link of image
+            type: string
+            example: 'xxxxx'
+            maxLength: 200
+        lastupUserId:
+          description: ID of user to create
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+    PropertyUpdateResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Status of the update property
+          type: string
+          example: 'OK'
+    PropertyDeleteResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Status of the delete property
+          type: string
+          example: 'OK'
+    PropertyGetResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PropertyResponse'
   responses:
     webApiValidationError:
       description: webApi input value validation failure

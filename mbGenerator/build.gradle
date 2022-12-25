@@ -13,7 +13,9 @@ repositories {
 }
 
 mbGenerator.doFirst {
-    delete "${rootDir}/mbGenerator/bin"
+    delete "${rootDir}/bin/"
+    delete "${rootDir}/apispecs/bin/"
+    delete "${rootDir}/mbGenerator/bin/"
     delete "${rootDir}/mbGenerator/src/main/java/com/tdtu/mbGenerator/generate"
     delete "${rootDir}/mbGenerator/src/main/resources/com/tdtu/mbGenerator/generate"
     mkdir "${rootDir}/mbGenerator/src/main/java/com/tdtu/mbGenerator"

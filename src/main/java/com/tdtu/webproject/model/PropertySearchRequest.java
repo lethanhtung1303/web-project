@@ -8,6 +8,7 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class PropertySearchRequest {
+    private String propertyId;
     private String userId;
     private String typeId;
     private String title;

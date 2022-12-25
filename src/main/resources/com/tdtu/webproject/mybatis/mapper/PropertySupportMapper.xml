@@ -56,8 +56,11 @@
                     ON TTP.TYPE_ID = TP.TYPE_ID
                 WHERE
                     TP.IS_DELETED = '0'
+                <if test="(propertyId != null and propertyId != '')">
+                    AND TP.PROPERTY_ID = ${propertyId}
+                </if>
                 <if test="(userId != null and userId != '')">
-                    AND TU.USER_ID = ${userId}
+                    AND TP.CREATE_USER_ID = ${userId}
                 </if>
                 <if test="(typeId != null and typeId != '')">
                     AND TP.TYPE_ID = ${typeId}
@@ -120,8 +123,11 @@
             ON TTP.TYPE_ID = TP.TYPE_ID
         WHERE
             TP.IS_DELETED = '0'
+        <if test="(propertyId != null and propertyId != '')">
+            AND TP.PROPERTY_ID = ${propertyId}
+        </if>
         <if test="(userId != null and userId != '')">
-            AND TU.USER_ID = ${userId}
+            AND TP.CREATE_USER_ID = ${userId}
         </if>
         <if test="(typeId != null and typeId != '')">
             AND TP.TYPE_ID = ${typeId}

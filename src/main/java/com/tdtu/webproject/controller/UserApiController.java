@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -156,7 +158,9 @@ public class UserApiController implements UserApi {
         UserSearchUseCaseResults output = userGetUseCase.getUser(userId);
         return ResponseEntity.ok(UserGetResponse.builder()
                 .status(HttpStatus.OK.value())
-                .results(List.of(this.buildUserResponse(output)))
+                .results(Optional.ofNullable(output).isPresent()
+                        ? List.of(this.buildUserResponse(output))
+                        : Collections.emptyList())
                 .build());
     }
 

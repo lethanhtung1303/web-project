@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 public class PropertySearchCondition {
+    private BigDecimal propertyId;
     private BigDecimal userId;
     private BigDecimal typeId;
     private String title;
