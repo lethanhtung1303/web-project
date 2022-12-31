@@ -75,6 +75,7 @@ public class PropertyApiController implements PropertyApi {
     private PropertySearchUseCaseInput buildUserSearchUseCaseInput(SearchPropertyRequest request) {
         return PropertySearchUseCaseInput.builder()
                 .userId(request.getUserId())
+                .userName(request.getUserName())
                 .typeId(request.getTypeId())
                 .title(request.getTitle())
                 .address(request.getAddress())

@@ -30,6 +30,7 @@ public class PropertySearchUseCase {
     private PropertySearchRequest buildPropertySearchRequest(PropertySearchUseCaseInput input) {
         return PropertySearchRequest.builder()
                 .userId(input.getUserId())
+                .userName(input.getUserName())
                 .typeId(input.getTypeId())
                 .title(input.getTitle())
                 .address(input.getAddress())

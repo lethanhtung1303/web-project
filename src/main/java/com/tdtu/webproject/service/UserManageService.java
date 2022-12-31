@@ -77,4 +77,11 @@ public class UserManageService {
                 .map(UserSearchResult::getUserName)
                 .orElse(null);
     }
+
+    public List<BigDecimal> getUserIdByUserName(List<UserSearchResult> userList, String userName){
+        return userList.stream()
+                .filter(user -> user.getUserName().contains(userName))
+                .map(UserSearchResult::getUserId)
+                .collect(Collectors.toList());
+    }
 }

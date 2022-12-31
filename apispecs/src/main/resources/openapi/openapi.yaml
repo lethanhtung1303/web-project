@@ -152,7 +152,7 @@ paths:
         500:
           $ref: '#/components/responses/500'
         200:
-          description: Status update user
+          description: Status delete user
           content:
             application/json:
               schema:
@@ -346,7 +346,7 @@ paths:
         500:
           $ref: '#/components/responses/500'
         200:
-          description: Status update user
+          description: Status delete user
           content:
             application/json:
               schema:
@@ -382,6 +382,211 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PropertyGetResponse'
+  /v1/getAllStoreByUser:
+    get:
+      tags:
+        - Store
+      summary: Api for get all Store by UserId
+      operationId: getAllStoreByUser
+      parameters:
+        - name: userId
+          in: query
+          schema:
+            type: string
+            pattern: '^[0-9]{1,19}$'
+            example: '123456'
+          required: true
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Store List
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreGetAllResponse'
+  /v1/updateStore:
+    post:
+      tags:
+        - Store
+      summary: Api for update Store
+      operationId: updateStore
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreUpdateRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreUpdateResponse'
+  /v1/createNews:
+    post:
+      tags:
+        - News
+      summary: Api for create News
+      operationId: createNews
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsCreateRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsCreateResponse'
+  /v1/updateNews:
+    post:
+      tags:
+        - News
+      summary: Api for update News
+      operationId: updateNews
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsUpdateRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsUpdateResponse'
+  /v1/deleteNews:
+    delete:
+      tags:
+        - News
+      summary: Api for delete news
+      operationId: deleteNews
+      parameters:
+        - name: newsId
+          in: query
+          schema:
+            type: string
+            pattern: '^[0-9]{1,19}$'
+            example: '123456'
+          required: true
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status delete news
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsDeleteResponse'
+  /v1/searchNews:
+    post:
+      tags:
+        - News
+      summary: Api for search news
+      operationId: searchNews
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsSearchRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Search news in data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsSearchResponse'
+  /v1/getNews:
+    get:
+      tags:
+        - News
+      summary: Api for get News by NewsId
+      operationId: getNews
+      parameters:
+        - name: newsId
+          in: query
+          schema:
+            type: string
+            pattern: '^[0-9]{1,19}$'
+            example: '123456'
+          required: true
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsGetResponse'
 components:
   parameters:
     xForwardedRole:
@@ -647,7 +852,7 @@ components:
           format: int32
           example: 200
         message:
-          description: Status of the update user
+          description: Message of the update user
           type: string
           example: 'OK'
     UserCreateRequest:
@@ -732,7 +937,7 @@ components:
           format: int32
           example: 200
         message:
-          description: Status of the create user
+          description: Message of the create user
           type: string
           example: 'OK'
     UserGetResponse:
@@ -754,7 +959,7 @@ components:
           format: int32
           example: 200
         message:
-          description: Status of the delete user
+          description: Message of the delete user
           type: string
           example: 'OK'
     ChangePassRequest:
@@ -802,7 +1007,7 @@ components:
           format: int32
           example: 200
         message:
-          description: Status of the change pass
+          description: Message of the change pass
           type: string
           example: 'OK'
     LoginRequest:
@@ -831,7 +1036,7 @@ components:
           format: int32
           example: 200
         message:
-          description: Status of the login
+          description: Message of the login
           type: string
           example: 'OK'
     AllPropertyTypeResponse:
@@ -878,6 +1083,11 @@ components:
           type: string
           example: '123456'
           pattern: '^[0-9]{1,19}$'
+        userName:
+          description: userName of user create property
+          type: string
+          example: '123456'
+          maxLength: 200
         typeId:
           description: Type ID of property
           type: string
@@ -1092,7 +1302,7 @@ components:
           format: int32
           example: 200
         message:
-          description: Status of the create property
+          description: Message of the create property
           type: string
           example: 'OK'
     PropertyUpdateRequest:
@@ -1109,7 +1319,7 @@ components:
         - lastupUserId
       properties:
         propertyId:
-          description: ID of user
+          description: ID of property
           type: string
           example: '123456'
           pattern: '^[0-9]{1,19}$'
@@ -1168,7 +1378,7 @@ components:
           format: int32
           example: 200
         message:
-          description: Status of the update property
+          description: Message of the update property
           type: string
           example: 'OK'
     PropertyDeleteResponse:
@@ -1179,7 +1389,7 @@ components:
           format: int32
           example: 200
         message:
-          description: Status of the delete property
+          description: Message of the delete property
           type: string
           example: 'OK'
     PropertyGetResponse:
@@ -1193,6 +1403,261 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PropertyResponse'
+    StoreGetAllResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: object
+          properties:
+            resultsTotalCount:
+              description: Number of property with condition
+              type: integer
+              format: int64
+              example: 1000
+            stores:
+              description: Store list
+              type: array
+              items:
+                description: Store List of Us
+                type: string
+                example: 'xxxxxx'
+    StoreUpdateRequest:
+      type: object
+      required:
+        - propertyId
+        - createUserId
+      properties:
+        propertyId:
+          description: ID of property
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        createUserId:
+          description: ID of user to create
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+    StoreUpdateResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Message of the update store
+          type: string
+          example: 'OK'
+    NewsCreateRequest:
+      type: object
+      required:
+        - title
+        - content
+        - createUserId
+      properties:
+        title:
+          description: Title of news
+          type: string
+          example: 'xxxxx'
+          maxLength: 4000
+        content:
+          description: Content of news
+          type: string
+          example: 'xxxxx'
+          maxLength: 4000
+        createUserId:
+          description: ID of user create news
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        cover:
+          description: Link of cover
+          type: string
+          example: 'xxxxx'
+          maxLength: 200
+    NewsCreateResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Message of the create news
+          type: string
+          example: 'OK'
+    NewsUpdateRequest:
+      type: object
+      required:
+        - newsId
+        - title
+        - content
+        - lastupUserId
+      properties:
+        newsId:
+          description: ID of news
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        title:
+          description: Title of news
+          type: string
+          example: 'xxxxx'
+          maxLength: 4000
+        content:
+          description: Content of news
+          type: string
+          example: 'xxxxx'
+          maxLength: 4000
+        lastupUserId:
+          description: ID of user update news
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        cover:
+          description: Link of cover
+          type: string
+          example: 'xxxxx'
+          maxLength: 200
+    NewsUpdateResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Message of the update news
+          type: string
+          example: 'OK'
+    NewsDeleteResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Message of the delete news
+          type: string
+          example: 'OK'
+    NewsSearchRequest:
+      x-custom-validate:
+        date-range:
+          - from: 'createDatetimeFrom'
+            to: 'createDatetimeTo'
+      type: object
+      properties:
+        title:
+          description: Title of news
+          type: string
+          example: 'xxxxx'
+          maxLength: 4000
+        userName:
+          description: Name of user
+          type: string
+          example: 'user'
+          maxLength: 200
+        createDatetimeFrom:
+          description: Date time create product
+          type: string
+          example: '123456'
+          pattern: '^(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))\/(0[1-9]|1[0-2])\/([12]\d{3})$'
+        createDatetimeTo:
+          description: Date time create product
+          type: string
+          example: '123456'
+          pattern: '^(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))\/(0[1-9]|1[0-2])\/([12]\d{3})$'
+        offset:
+          description: The offset rows before beginning to return the rows
+          type: integer
+          format: int32
+          minimum: 0
+          example: 1
+        limit:
+          description: The number of rows
+          type: integer
+          format: int32
+          minimum: 1
+          example: 20
+    NewsSearchResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: object
+          properties:
+            resultsTotalCount:
+              description: Number of new with condition
+              type: integer
+              format: int64
+              example: 1000
+            news:
+              description: News list
+              type: array
+              items:
+                $ref: '#/components/schemas/NewsResponse'
+    NewsResponse:
+      type: object
+      properties:
+        newsId:
+          description: ID of news
+          type: string
+          example: '123456'
+        title:
+          description: Title of news
+          type: string
+          example: '123456'
+        content:
+          description: Content of news
+          type: string
+          example: 'xxxxx'
+        cover:
+          description: Cover of news
+          type: string
+          example: '123456'
+        createUserId:
+          description: ID of user create news
+          type: string
+          example: '123456'
+        createUserName:
+          description: Name of user create news
+          type: string
+          example: 'xxxxx'
+        createDatetime:
+          description: Date-time create news
+          type: string
+          example: '2022-12-20 00:00:00'
+        lastupUserId:
+          description: ID of user lastup news
+          type: string
+          example: '123456'
+        lastupUserName:
+          description: Name of user lastup news
+          type: string
+          example: 'xxxxx'
+        lastupDatetime:
+          description: Date-time lastup news
+          type: string
+          example: '2022-12-20 00:00:00'
+    NewsGetResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsResponse'
   responses:
     webApiValidationError:
       description: webApi input value validation failure

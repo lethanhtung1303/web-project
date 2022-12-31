@@ -7,19 +7,12 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class PropertySearchRequest {
-    private String propertyId;
-    private String userId;
-    private String userName;
-    private String typeId;
+public class NewsSearchRequest {
+    private String newsId;
     private String title;
-    private String address;
+    private String userName;
     private String createDatetimeFrom;
     private String createDatetimeTo;
-    private String amountFrom;
-    private String amountTo;
-    private String areaFrom;
-    private String areaTo;
     private Integer offset;
     private Integer limit;
 }

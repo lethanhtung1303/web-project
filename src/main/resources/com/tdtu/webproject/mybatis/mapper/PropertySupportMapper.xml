@@ -62,6 +62,12 @@
                 <if test="(userId != null and userId != '')">
                     AND TP.CREATE_USER_ID = ${userId}
                 </if>
+                <if test="(userIdList != null and userIdList.size() > 0)">
+                    AND TP.CREATE_USER_ID IN
+                    <foreach close=")" collection="userIdList" item="listItem" open="(" separator=",">
+                        #{listItem}
+                    </foreach>
+                </if>
                 <if test="(typeId != null and typeId != '')">
                     AND TP.TYPE_ID = ${typeId}
                 </if>
@@ -128,6 +134,12 @@
         </if>
         <if test="(userId != null and userId != '')">
             AND TP.CREATE_USER_ID = ${userId}
+        </if>
+        <if test="(userIdList != null and userIdList.size() > 0)">
+            AND TP.CREATE_USER_ID IN
+            <foreach close=")" collection="userIdList" item="listItem" open="(" separator=",">
+                #{listItem}
+            </foreach>
         </if>
         <if test="(typeId != null and typeId != '')">
             AND TP.TYPE_ID = ${typeId}

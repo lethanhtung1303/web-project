@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdtu.webproject.mybatis.mapper.NewsSupportMapper">
+    <resultMap id="BaseResultMap" type="com.tdtu.webproject.mybatis.result.NewsSearchResult">
+        <id column="NEWS_ID" jdbcType="NUMERIC" property="newsId" />
+        <result column="TITLE" jdbcType="VARCHAR" property="title" />
+        <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+        <result column="COVER" jdbcType="VARCHAR" property="cover" />
+        <result column="CREATE_USER_ID" jdbcType="NUMERIC" property="createUserId" />
+        <result column="CREATE_DATETIME" jdbcType="TIMESTAMP" property="createDatetime" />
+        <result column="LASTUP_USER_ID" jdbcType="NUMERIC" property="lastupUserId" />
+        <result column="LASTUP_DATETIME" jdbcType="TIMESTAMP" property="lastupDatetime" />
+    </resultMap>
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT
+            NEWS_ID,
+            TITLE,
+            CONTENT,
+            COVER,
+            CREATE_USER_ID,
+            CREATE_DATETIME,
+            LASTUP_USER_ID,
+            LASTUP_DATETIME,
+        FROM (
+            SELECT
+                TN.NEWS_ID,
+                TN.TITLE,
+                TN.CONTENT,
+                TN.COVER,
+                TN.CREATE_USER_ID,
+                TN.CREATE_DATETIME,
+                TN.LASTUP_USER_ID,
+                TN.LASTUP_DATETIME,
+                ROW_NUMBER() OVER (ORDER BY TN.NEWS_ID) AS RN
+                FROM
+                    TDT_NEWS TN
+                WHERE
+                    TN.IS_DELETED = '0'
+                <if test="(newsId != null and newsId != '')">
+                    AND TN.NEWS_ID = ${newsId}
+                </if>
+                <if test="(title != null and title != '')">
+                    AND UPPER(TN.TITLE) LIKE UPPER('%${title}%')
+                </if>
+                <if test="(userIdList != null and userIdList.size() > 0)">
+                    AND TN.CREATE_USER_ID IN
+                    <foreach close=")" collection="userIdList" item="listItem" open="(" separator=",">
+                        #{listItem}
+                    </foreach>
+                </if>
+                <choose>
+                    <when test="createDatetimeFrom != null and createDatetimeTo != null">
+                        and TN.CREATE_DATETIME BETWEEN #{createDatetimeFrom} AND #{createDatetimeTo}
+                    </when>
+                    <when test="createDatetimeFrom != null">
+                        and TN.CREATE_DATETIME >= #{createDatetimeFrom}
+                    </when>
+                    <when test="createDatetimeTo != null">
+                        and TN.CREATE_DATETIME <![CDATA[ <= ]]> #{createDatetimeTo}
+                    </when>
+                </choose>
+        ) Temp
+    <if test="(offset != null and limit != null)">
+        WHERE Temp.RN > #{offset}
+        AND Temp.RN <![CDATA[ <= ]]> #{offset} + #{limit}
+    </if>
+        ORDER BY NEWS_ID
+    </select>
+
+    <select id="count" resultType="java.lang.Long">
+        SELECT
+            COUNT(*) AS RESULTS_TOTAL_COUNT
+        FROM
+            TDT_NEWS TN
+        WHERE
+            TN.IS_DELETED = '0'
+        <if test="(newsId != null and newsId != '')">
+            AND TN.NEWS_ID = ${newsId}
+        </if>
+        <if test="(title != null and title != '')">
+            AND UPPER(TN.TITLE) LIKE UPPER('%${title}%')
+        </if>
+        <if test="(userIdList != null and userIdList.size() > 0)">
+            AND TN.CREATE_USER_ID IN
+            <foreach item="item" collection="userIdList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <choose>
+            <when test="createDatetimeFrom != null and createDatetimeTo != null">
+                and TN.CREATE_DATETIME BETWEEN #{createDatetimeFrom} AND #{createDatetimeTo}
+            </when>
+            <when test="createDatetimeFrom != null">
+                and TN.CREATE_DATETIME >= #{createDatetimeFrom}
+            </when>
+            <when test="createDatetimeTo != null">
+                and TN.CREATE_DATETIME <![CDATA[ <= ]]> #{createDatetimeTo}
+            </when>
+        </choose>
+    </select>
+</mapper>

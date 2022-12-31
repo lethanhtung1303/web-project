@@ -8,7 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 
 public class DateUtil {
-    public static final String YYYMMDD_FORMAT_SLASH = "uuuu/MM/dd";
+    public static final String YYYYMMDD_FORMAT_SLASH = "uuuu/MM/dd";
+    public static final String DDMMYYYY_FORMAT_SLASH = "dd/MM/uuuu";
     public static final String DATETIME_FORMAT_SLASH = "uuuu/MM/dd HH:mm:ss";
 
     public static LocalDateTime getTimeNow() {
@@ -23,6 +24,12 @@ public class DateUtil {
     public static LocalDateTime parseLocalDateTime(@NonNull String target,
                                                    @NonNull String pattern) {
         return LocalDateTime.parse(target,
+                DateTimeFormatter.ofPattern(pattern).withResolverStyle(ResolverStyle.STRICT));
+    }
+
+    public static LocalDate parseLocalDate(@NonNull String target,
+                                           @NonNull String pattern) {
+        return LocalDate.parse(target,
                 DateTimeFormatter.ofPattern(pattern).withResolverStyle(ResolverStyle.STRICT));
     }
 

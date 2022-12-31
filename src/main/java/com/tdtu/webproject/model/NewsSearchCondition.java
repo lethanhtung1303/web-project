@@ -11,19 +11,12 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
-public class PropertySearchCondition {
-    private BigDecimal propertyId;
-    private String userId;
-    private List<String> userIdList;
-    private BigDecimal typeId;
+public class NewsSearchCondition {
+    private BigDecimal newsId;
     private String title;
-    private String address;
+    private List<String> userIdList;
     private LocalDateTime createDatetimeFrom;
     private LocalDateTime createDatetimeTo;
-    private BigDecimal amountFrom;
-    private BigDecimal amountTo;
-    private BigDecimal areaFrom;
-    private BigDecimal areaTo;
     private Integer offset;
     private Integer limit;
 }

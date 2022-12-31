@@ -36,12 +36,17 @@ public class PropertyService {
     private final PropertyInfoRepository propertyInfoRepository;
 
     public Long count(PropertySearchRequest request) {
-        return propertyRepository.countProperty(this.buildPropertySearchCondition(request));
+        PropertySearchCondition condition  = this.buildPropertySearchCondition(request);
+        return Optional.ofNullable(condition).isPresent()
+                ? propertyRepository.countProperty(condition)
+                : 0L;
     }
 
     public List<PropertySearchResponse> search(PropertySearchRequest request) {
-        List<PropertySearchResult> propertySearchResult =
-                propertyRepository.searchProperty(this.buildPropertySearchCondition(request));
+        PropertySearchCondition condition  = this.buildPropertySearchCondition(request);
+        List<PropertySearchResult> propertySearchResult = Optional.ofNullable(condition).isPresent()
+                ? propertyRepository.searchProperty(condition)
+                : Collections.emptyList();
         return Optional.ofNullable(propertySearchResult).isPresent()
                 ? propertySearchResult.stream()
                     .map(this::buildPropertySearchResponse)
@@ -50,19 +55,30 @@ public class PropertyService {
     }
 
     private PropertySearchCondition buildPropertySearchCondition(PropertySearchRequest request) {
+        List<String> userIdList = new ArrayList<>();
+        if (Optional.ofNullable(request.getUserName()).isPresent()){
+            userManageService.getUserIdByUserName(userManageService.getAllUserResult(), request.getUserName())
+                    .forEach(userId -> userIdList.add(StringUtil.convertBigDecimalToString(userId)));
+        }
+        if (Optional.ofNullable(request.getUserName()).isPresent() && !ArrayUtil.isNotNullOrEmptyList(userIdList)){
+            return null;
+        }
         String createDatetimeFrom = request.getCreateDatetimeFrom();
         String createDatetimeTo = request.getCreateDatetimeTo();
         return PropertySearchCondition.builder()
                 .propertyId(NumberUtil.toBigDeimal(request.getPropertyId()).orElse(null))
-                .userId(NumberUtil.toBigDeimal(request.getUserId()).orElse(null))
+                .userId(request.getUserId())
+                .userIdList(userIdList)
                 .typeId(NumberUtil.toBigDeimal(request.getTypeId()).orElse(null))
                 .title(request.getTitle())
                 .address(request.getAddress())
                 .createDatetimeFrom(Optional.ofNullable(createDatetimeFrom).isPresent()
-                        ? DateUtil.parseLocalDateTime(createDatetimeFrom, DateUtil.YYYMMDD_FORMAT_SLASH)
+                        ? DateUtil.parseLocalDateTime(
+                                DateUtil.parseLocalDate(createDatetimeFrom, DateUtil.DDMMYYYY_FORMAT_SLASH))
                         : null)
                 .createDatetimeTo(Optional.ofNullable(createDatetimeTo).isPresent()
-                        ? DateUtil.parseLocalDateTime(createDatetimeTo, DateUtil.YYYMMDD_FORMAT_SLASH)
+                        ? DateUtil.parseLocalDateTime(
+                                DateUtil.parseLocalDate(createDatetimeTo, DateUtil.DDMMYYYY_FORMAT_SLASH))
                         : null)
                 .amountFrom(NumberUtil.toBigDeimal(request.getAmountFrom()).orElse(null))
                 .amountTo(NumberUtil.toBigDeimal(request.getAmountTo()).orElse(null))
