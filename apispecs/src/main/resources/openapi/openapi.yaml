@@ -587,6 +587,63 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NewsGetResponse'
+  /v1/createContact:
+    post:
+      tags:
+        - Contact
+      summary: Api for create Contact
+      operationId: createContact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactCreateRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactCreateResponse'
+  /v1/handleContact:
+    post:
+      tags:
+        - Contact
+      summary: Api for handle Contact
+      operationId: handleContact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactHandleRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactHandleResponse'
+
 components:
   parameters:
     xForwardedRole:
@@ -1658,6 +1715,67 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NewsResponse'
+    ContactCreateRequest:
+      type: object
+      required:
+        - content
+        - email
+      properties:
+        email:
+          description: Email of user create Contact
+          type: string
+          example: 'username@domain.com'
+          pattern: '^\w+([.\-]?\w+)*@\w+([.\-]?\w+)*(\.\w{2,3})+$'
+          maxLength: 200
+        content:
+          description: Content of news
+          type: string
+          example: 'xxxxx'
+          maxLength: 4000
+        phone:
+          description: Phone number of user create Contact
+          type: string
+          example: '123456'
+          pattern: '^(84|0[3|5|7|8|9])+([0-9]{8})\b$'
+          maxLength: 10
+    ContactCreateResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Message of the create Contact
+          type: string
+          example: 'OK'
+    ContactHandleRequest:
+      type: object
+      required:
+        - contactId
+        - lastupUserId
+      properties:
+        contactId:
+          description: ID of Contact
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        lastupUserId:
+          description: ID of user to handle
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+    ContactHandleResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Message of the handle Contact
+          type: string
+          example: 'OK'
   responses:
     webApiValidationError:
       description: webApi input value validation failure

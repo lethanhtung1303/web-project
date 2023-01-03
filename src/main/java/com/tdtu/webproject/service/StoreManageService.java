@@ -15,8 +15,8 @@ public class StoreManageService {
 
     public TdtStorage getStorage(BigDecimal propertyId, BigDecimal userId){
         return this.getAllStore().stream()
-                .filter(user -> user.getPropertyId().equals(propertyId)
-                        && user.getUserId().equals(userId))
+                .filter(storage -> storage.getPropertyId().equals(propertyId)
+                        && storage.getUserId().equals(userId))
                 .findFirst()
                 .orElse(null);
     }
