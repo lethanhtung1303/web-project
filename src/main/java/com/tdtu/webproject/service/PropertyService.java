@@ -138,7 +138,7 @@ public class PropertyService {
             }
         }
         List<String> propertyImg = request.getPropertyImg();
-        if (ArrayUtil.isNotNullOrEmptyList(propertyImg) || propertyImg.size() < 3) {
+        if (!ArrayUtil.isNotNullOrEmptyList(propertyImg) || propertyImg.size() < 3) {
             throw new BusinessException("Please select at least 3 images of the property!");
         }
         if (Optional.ofNullable(propertyId).isPresent()){
