@@ -135,11 +135,11 @@ public class NewsService {
                 .userIdList(userIdList)
                 .createDatetimeFrom(Optional.ofNullable(createDatetimeFrom).isPresent()
                         ? DateUtil.parseLocalDateTime(
-                                DateUtil.parseLocalDate(createDatetimeFrom, DateUtil.DDMMYYYY_FORMAT_SLASH))
+                                DateUtil.parseLocalDate(createDatetimeFrom, DateUtil.YYYYMMDD_FORMAT_SLASH))
                         : null)
                 .createDatetimeTo(Optional.ofNullable(createDatetimeTo).isPresent()
                         ? DateUtil.parseLocalDateTime(
-                                DateUtil.parseLocalDate(createDatetimeTo, DateUtil.DDMMYYYY_FORMAT_SLASH))
+                                DateUtil.parseLocalDate(createDatetimeTo, DateUtil.YYYYMMDD_FORMAT_SLASH))
                         : null)
                 .build();
     }

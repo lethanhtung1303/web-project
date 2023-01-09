@@ -78,6 +78,22 @@ public class UserManageService {
                 .orElse(null);
     }
 
+    public String getUserPhone(List<UserSearchResult> userList, BigDecimal userId){
+        return userList.stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findFirst()
+                .map(UserSearchResult::getPhone)
+                .orElse(null);
+    }
+
+    public String getUserEmail(List<UserSearchResult> userList, BigDecimal userId){
+        return userList.stream()
+                .filter(user -> user.getUserId().equals(userId))
+                .findFirst()
+                .map(UserSearchResult::getEmail)
+                .orElse(null);
+    }
+
     public List<BigDecimal> getUserIdByUserName(List<UserSearchResult> userList, String userName){
         return userList.stream()
                 .filter(user -> user.getUserName().contains(userName))

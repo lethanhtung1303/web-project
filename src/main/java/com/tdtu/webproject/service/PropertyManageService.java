@@ -2,6 +2,8 @@ package com.tdtu.webproject.service;
 
 import com.tdtu.mbGenerator.generate.mybatis.model.TdtProperty;
 import com.tdtu.mbGenerator.generate.mybatis.model.TdtPropertyType;
+import com.tdtu.webproject.model.PropertySearchCondition;
+import com.tdtu.webproject.mybatis.result.PropertySearchResult;
 import com.tdtu.webproject.repository.PropertyRepository;
 import com.tdtu.webproject.repository.PropertyTypeRepository;
 import com.tdtu.webproject.utils.ArrayUtil;
@@ -36,5 +38,16 @@ public class PropertyManageService {
 
     public List<TdtPropertyType> getAllPropertyType(){
         return typePropertyRepository.selectAll();
+    }
+
+    public List<PropertySearchResult> getAllPropertySearchResult(){
+        return propertyRepository.searchProperty(PropertySearchCondition.builder().build());
+    }
+
+    public PropertySearchResult getPropertySearchResultById(BigDecimal propertyId){
+        return this.getAllPropertySearchResult().stream()
+                .filter(item -> item.getPropertyId().equals(propertyId))
+                .findFirst()
+                .orElse(null);
     }
 }

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdtu.webproject.mybatis.mapper.BookingSupportMapper">
+    <resultMap id="BaseResultMap" type="com.tdtu.webproject.mybatis.result.BookingSearchResult">
+        <id column="BOOKING_ID" jdbcType="NUMERIC" property="bookingId" />
+        <id column="PROPERTY_ID" jdbcType="NUMERIC" property="propertyId" />
+        <result column="BOOKING_DATE" jdbcType="TIMESTAMP" property="bookingDate" />
+        <result column="NOTE" jdbcType="VARCHAR" property="note" />
+        <result column="APPROVE_STATUS" jdbcType="VARCHAR" property="approveStatus" />
+        <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId" />
+        <result column="CREATE_DATETIME" jdbcType="TIMESTAMP" property="createDatetime" />
+        <result column="LASTUP_USER_ID" jdbcType="VARCHAR" property="lastupUserId" />
+        <result column="LASTUP_DATETIME" jdbcType="TIMESTAMP" property="lastupDatetime" />
+    </resultMap>
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT
+            BOOKING_ID,
+            PROPERTY_ID,
+            BOOKING_DATE,
+            NOTE,
+            APPROVE_STATUS,
+            CREATE_USER_ID,
+            CREATE_DATETIME,
+            LASTUP_USER_ID,
+            LASTUP_DATETIME,
+        FROM (
+            SELECT
+                TB.BOOKING_ID,
+                TB.PROPERTY_ID,
+                TB.BOOKING_DATE,
+                TB.NOTE,
+                TB.APPROVE_STATUS,
+                TB.CREATE_USER_ID,
+                TB.CREATE_DATETIME,
+                TB.LASTUP_USER_ID,
+                TB.LASTUP_DATETIME,
+                ROW_NUMBER() OVER (ORDER BY TB.BOOKING_ID) AS RN
+                FROM
+                    TDT_BOOKING TB
+                WHERE
+                    TB.IS_DELETED = '0'
+                <if test="(bookingId != null and bookingId != '')">
+                    AND TB.BOOKING_ID = ${bookingId}
+                </if>
+                <if test="(propertyIdList != null and propertyIdList.size() > 0)">
+                    AND TB.PROPERTY_ID IN
+                    <foreach close=")" collection="propertyIdList" item="listItem" open="(" separator=",">
+                        #{listItem}
+                    </foreach>
+                </if>
+                <choose>
+                    <when test="bookingDateFrom != null and bookingDateTo != null">
+                        and TB.BOOKING_DATE BETWEEN #{bookingDateFrom} AND #{bookingDateTo}
+                    </when>
+                    <when test="bookingDateFrom != null">
+                        and TB.BOOKING_DATE >= #{bookingDateFrom}
+                    </when>
+                    <when test="bookingDateTo != null">
+                        and TB.BOOKING_DATE <![CDATA[ <= ]]> #{bookingDateTo}
+                    </when>
+                </choose>
+                <if test="(createUserId != null and createUserId != '')">
+                    AND TB.CREATE_USER_ID = '${createUserId}'
+                </if>
+                <choose>
+                    <when test="createDatetimeFrom != null and createDatetimeTo != null">
+                        and TB.CREATE_DATETIME BETWEEN #{createDatetimeFrom} AND #{createDatetimeTo}
+                    </when>
+                    <when test="createDatetimeFrom != null">
+                        and TB.CREATE_DATETIME >= #{createDatetimeFrom}
+                    </when>
+                    <when test="createDatetimeTo != null">
+                        and TB.CREATE_DATETIME <![CDATA[ <= ]]> #{createDatetimeTo}
+                    </when>
+                </choose>
+                <if test="(approveStatus != null and approveStatus != '')">
+                    AND TB.APPROVE_STATUS = '${approveStatus}'
+                </if>
+        ) Temp
+        <if test="(offset != null and limit != null)">
+            WHERE Temp.RN > #{offset}
+            AND Temp.RN <![CDATA[ <= ]]> #{offset} + #{limit}
+        </if>
+        ORDER BY BOOKING_ID
+    </select>
+
+    <select id="count" resultType="java.lang.Long">
+        SELECT
+            COUNT(*) AS RESULTS_TOTAL_COUNT
+        FROM
+            TDT_BOOKING TB
+        WHERE
+            TB.IS_DELETED = '0'
+        <if test="(bookingId != null and bookingId != '')">
+            AND TB.BOOKING_ID = ${bookingId}
+        </if>
+        <if test="(propertyIdList != null and propertyIdList.size() > 0)">
+            AND TB.PROPERTY_ID IN
+            <foreach close=")" collection="propertyIdList" item="listItem" open="(" separator=",">
+                #{listItem}
+            </foreach>
+        </if>
+        <choose>
+            <when test="bookingDateFrom != null and bookingDateTo != null">
+                and TB.BOOKING_DATE BETWEEN #{bookingDateFrom} AND #{bookingDateTo}
+            </when>
+            <when test="bookingDateFrom != null">
+                and TB.BOOKING_DATE >= #{bookingDateFrom}
+            </when>
+            <when test="bookingDateTo != null">
+                and TB.BOOKING_DATE <![CDATA[ <= ]]> #{bookingDateTo}
+            </when>
+        </choose>
+        <if test="(createUserId != null and createUserId != '')">
+            AND TB.CREATE_USER_ID = '${createUserId}'
+        </if>
+        <choose>
+            <when test="createDatetimeFrom != null and createDatetimeTo != null">
+                and TB.CREATE_DATETIME BETWEEN #{createDatetimeFrom} AND #{createDatetimeTo}
+            </when>
+            <when test="createDatetimeFrom != null">
+                and TB.CREATE_DATETIME >= #{createDatetimeFrom}
+            </when>
+            <when test="createDatetimeTo != null">
+                and TB.CREATE_DATETIME <![CDATA[ <= ]]> #{createDatetimeTo}
+            </when>
+        </choose>
+        <if test="(approveStatus != null and approveStatus != '')">
+            AND TB.APPROVE_STATUS = '${approveStatus}'
+        </if>
+    </select>
+</mapper>

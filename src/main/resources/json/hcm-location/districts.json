@@ -1,0 +1,170 @@
+[
+    {
+        "code": "760",
+        "name_with_type": "Quận 1",
+        "path_with_type": "Quận 1, Thành phố Hồ Chí Minh",
+        "lat": "10.7748455",
+        "lng": "106.6993569"
+    },
+    {
+        "code": "761",
+        "name_with_type": "Quận 12",
+        "path_with_type": "Quận 12, Thành phố Hồ Chí Minh",
+        "lat": "10.8615373",
+        "lng": "106.6642446"
+    },
+    {
+        "code": "762",
+        "name_with_type": "Quận Thủ Đức",
+        "path_with_type": "Quận Thủ Đức, Thành phố Hồ Chí Minh",
+        "lat": "10.8386056",
+        "lng": "106.7147298"
+    },
+    {
+        "code": "763",
+        "name_with_type": "Quận 9",
+        "path_with_type": "Quận 9, Thành phố Hồ Chí Minh",
+        "lat": "10.8311346",
+        "lng": "106.7715507"
+    },
+    {
+        "code": "764",
+        "name_with_type": "Quận Gò Vấp",
+        "path_with_type": "Quận Gò Vấp, Thành phố Hồ Chí Minh",
+        "lat": "10.8352833",
+        "lng": "106.6740656"
+    },
+    {
+        "code": "765",
+        "name_with_type": "Quận Bình Thạnh",
+        "path_with_type": "Quận Bình Thạnh, Thành phố Hồ Chí Minh",
+        "lat": "10.8122949",
+        "lng": "106.7040417"
+    },
+    {
+        "code": "766",
+        "name_with_type": "Quận Tân Bình",
+        "path_with_type": "Quận Tân Bình, Thành phố Hồ Chí Minh",
+        "lat": "10.8030656",
+        "lng": "106.6522761"
+    },
+    {
+        "code": "767",
+        "name_with_type": "Quận Tân Phú",
+        "path_with_type": "Quận Tân Phú, Thành phố Hồ Chí Minh",
+        "lat": "10.7915944",
+        "lng": "106.6278536"
+    },
+    {
+        "code": "768",
+        "name_with_type": "Quận Phú Nhuận",
+        "path_with_type": "Quận Phú Nhuận, Thành phố Hồ Chí Minh",
+        "lat": "10.8010732",
+        "lng": "106.6798916"
+    },
+    {
+        "code": "769",
+        "name_with_type": "Quận 2",
+        "path_with_type": "Quận 2, Thành phố Hồ Chí Minh",
+        "lat": "10.8018719",
+        "lng": "106.6673526"
+    },
+    {
+        "code": "770",
+        "name_with_type": "Quận 3",
+        "path_with_type": "Quận 3, Thành phố Hồ Chí Minh",
+        "lat": "10.7787432",
+        "lng": "106.6870287"
+    },
+    {
+        "code": "771",
+        "name_with_type": "Quận 10",
+        "path_with_type": "Quận 10, Thành phố Hồ Chí Minh",
+        "lat": "10.7726536",
+        "lng": "106.6682154"
+    },
+    {
+        "code": "772",
+        "name_with_type": "Quận 11",
+        "path_with_type": "Quận 11, Thành phố Hồ Chí Minh",
+        "lat": "10.7660032",
+        "lng": "106.6475536"
+    },
+    {
+        "code": "773",
+        "name_with_type": "Quận 4",
+        "path_with_type": "Quận 4, Thành phố Hồ Chí Minh",
+        "lat": "10.7607834",
+        "lng": "106.7071844"
+    },
+    {
+        "code": "774",
+        "name_with_type": "Quận 5",
+        "path_with_type": "Quận 5, Thành phố Hồ Chí Minh",
+        "lat": "10.7556833",
+        "lng": "106.6683066"
+    },
+    {
+        "code": "775",
+        "name_with_type": "Quận 6",
+        "path_with_type": "Quận 6, Thành phố Hồ Chí Minh",
+        "lat": "",
+        "lng": ""
+    },
+    {
+        "code": "776",
+        "name_with_type": "Quận 8",
+        "path_with_type": "Quận 8, Thành phố Hồ Chí Minh",
+        "lat": "10.7458683",
+        "lng": "106.6391072"
+    },
+    {
+        "code": "777",
+        "name_with_type": "Quận Bình Tân",
+        "path_with_type": "Quận Bình Tân, Thành phố Hồ Chí Minh",
+        "lat": "10.7705525",
+        "lng": "106.5995228"
+    },
+    {
+        "code": "778",
+        "name_with_type": "Quận 7",
+        "path_with_type": "Quận 7, Thành phố Hồ Chí Minh",
+        "lat": "10.7374992",
+        "lng": "106.7296517"
+    },
+    {
+        "code": "783",
+        "name_with_type": "Huyện Củ Chi",
+        "path_with_type": "Huyện Củ Chi, Thành phố Hồ Chí Minh",
+        "lat": "11.0370567",
+        "lng": "106.5024104"
+    },
+    {
+        "code": "784",
+        "name_with_type": "Huyện Hóc Môn",
+        "path_with_type": "Huyện Hóc Môn, Thành phố Hồ Chí Minh",
+        "lat": "10.878345",
+        "lng": "106.5763531"
+    },
+    {
+        "code": "785",
+        "name_with_type": "Huyện Bình Chánh",
+        "path_with_type": "Huyện Bình Chánh, Thành phố Hồ Chí Minh",
+        "lat": "10.7500035",
+        "lng": "106.5148858"
+    },
+    {
+        "code": "786",
+        "name_with_type": "Huyện Nhà Bè",
+        "path_with_type": "Huyện Nhà Bè, Thành phố Hồ Chí Minh",
+        "lat": "10.650967",
+        "lng": "106.7263825"
+    },
+    {
+        "code": "787",
+        "name_with_type": "Huyện Cần Giờ",
+        "path_with_type": "Huyện Cần Giờ, Thành phố Hồ Chí Minh",
+        "lat": "10.5252371",
+        "lng": "106.8808292"
+    }
+]

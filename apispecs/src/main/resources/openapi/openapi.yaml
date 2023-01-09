@@ -643,7 +643,242 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ContactHandleResponse'
-
+  /v1/getContact:
+    get:
+      tags:
+        - Contact
+      summary: Api for get Contact by ID
+      operationId: getContact
+      parameters:
+        - name: contactId
+          in: query
+          schema:
+            type: string
+            pattern: '^[0-9]{1,19}$'
+            example: '123456'
+          required: true
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactGetResponse'
+  /v1/searchContact:
+    post:
+      tags:
+        - Contact
+      summary: Api return list Contact with condition in request body
+      operationId: searchContact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactSearchRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Contact list form database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactSearchResponse'
+  /v1/deleteContact:
+    delete:
+      tags:
+        - Contact
+      summary: Api for delete Contact
+      operationId: deleteContact
+      parameters:
+        - name: contactId
+          in: query
+          schema:
+            type: string
+            pattern: '^[0-9]{1,19}$'
+            example: '123456'
+          required: true
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status delete contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactDeleteResponse'
+  /v1/createBooking:
+    post:
+      tags:
+        - Booking
+      summary: Api for create Booking
+      operationId: createBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingCreateRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingCreateResponse'
+  /v1/getBooking:
+    get:
+      tags:
+        - Booking
+      summary: Api for get Booking by ID
+      operationId: getBooking
+      parameters:
+        - name: bookingId
+          in: query
+          schema:
+            type: string
+            pattern: '^[0-9]{1,19}$'
+            example: '123456'
+          required: true
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Contact
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingGetResponse'
+  /v1/searchBooking:
+    post:
+      tags:
+        - Booking
+      summary: Api for search Booking
+      operationId: searchBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchBookingRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Search property in data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchBookingResponse'
+  /v1/updateBooking:
+    post:
+      tags:
+        - Booking
+      summary: Api for update Booking
+      operationId: updateBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingUpdateRequest'
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status update user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingUpdateResponse'
+  /v1/deleteBooking:
+    delete:
+      tags:
+        - Booking
+      summary: Api for delete Booking
+      operationId: deleteBooking
+      parameters:
+        - name: bookingId
+          in: query
+          schema:
+            type: string
+            pattern: '^[0-9]{1,19}$'
+            example: '123456'
+          required: true
+      responses:
+        400:
+          $ref: '#/components/responses/webApiValidationError'
+        401:
+          $ref: '#/components/responses/401'
+        403:
+          $ref: '#/components/responses/403'
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
+        200:
+          description: Status delete Booking
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookingDeleteResponse'
 components:
   parameters:
     xForwardedRole:
@@ -1161,15 +1396,15 @@ components:
           example: '123456'
           maxLength: 200
         createDatetimeFrom:
-          description: Date time create product
+          description: Date time create property
           type: string
           example: '123456'
-          pattern: '^(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))\/(0[1-9]|1[0-2])\/([12]\d{3})$'
+          pattern: '^([12]\d{3})\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))$'
         createDatetimeTo:
-          description: Date time create product
+          description: Date time create property
           type: string
           example: '123456'
-          pattern: '^(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))\/(0[1-9]|1[0-2])\/([12]\d{3})$'
+          pattern: '^([12]\d{3})\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))$'
         amountFrom:
           description: Amount of property
           type: string
@@ -1620,15 +1855,15 @@ components:
           example: 'user'
           maxLength: 200
         createDatetimeFrom:
-          description: Date time create product
+          description: Date time create news
           type: string
           example: '123456'
-          pattern: '^(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))\/(0[1-9]|1[0-2])\/([12]\d{3})$'
+          pattern: '^([12]\d{3})\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))$'
         createDatetimeTo:
-          description: Date time create product
+          description: Date time create news
           type: string
           example: '123456'
-          pattern: '^(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))\/(0[1-9]|1[0-2])\/([12]\d{3})$'
+          pattern: '^([12]\d{3})\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))$'
         offset:
           description: The offset rows before beginning to return the rows
           type: integer
@@ -1774,6 +2009,394 @@ components:
           example: 200
         message:
           description: Message of the handle Contact
+          type: string
+          example: 'OK'
+    ContactGetResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactResponse'
+    ContactResponse:
+      type: object
+      properties:
+        contactId:
+          description: ID of contact
+          type: string
+          example: '123456'
+        content:
+          description: content of contact
+          type: string
+          example: '123456'
+        email:
+          description: email of user create contact
+          type: string
+          example: '123456'
+        phone:
+          description: phone of user create contact
+          type: string
+          example: '123456'
+        approveStatus:
+          description: approve Status of contact
+          type: string
+          example: '123456'
+        handlerId:
+          description: ID of user handler contact
+          type: string
+          example: '123456'
+        handlerName:
+          description: Name of user handler contact
+          type: string
+          example: '123456'
+        createDatetime:
+          description: Time create contact
+          type: string
+          example: '123456'
+        lastupUserId:
+          description: ID of user update contact
+          type: string
+          example: '123456'
+        lastupUserName:
+          description: Name of user update contact
+          type: string
+          example: '123456'
+        lastupDatetime:
+          description: Time update contact
+          type: string
+          example: '123456'
+    ContactSearchRequest:
+      x-custom-validate:
+        date-range:
+          - from: 'createDatetimeFrom'
+            to: 'createDatetimeTo'
+      type: object
+      properties:
+        email:
+          description: Email of user create contact
+          type: string
+          example: 'username@domain.com'
+        content:
+          description: Content of user
+          type: string
+          example: '164, Tan My'
+        phone:
+          description: Phone number of user create contact
+          type: string
+          example: '123456'
+          maxLength: 10
+        createDatetimeFrom:
+          description: Date time create contact
+          type: string
+          example: '123456'
+          pattern: '^([12]\d{3})\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))$'
+        createDatetimeTo:
+          description: Date time create contact
+          type: string
+          example: '123456'
+          pattern: '^([12]\d{3})\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))$'
+        approveStatus:
+          description: approve Status of contact
+          type: string
+          pattern: '^(0|1|2)$'
+          maxLength: 1
+          example: '1'
+        offset:
+          description: The offset rows before beginning to return the rows
+          type: integer
+          format: int32
+          minimum: 0
+          example: 1
+        limit:
+          description: The number of rows
+          type: integer
+          format: int32
+          minimum: 1
+          example: 20
+    ContactSearchResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: object
+          properties:
+            contact:
+              description: Contact list
+              type: array
+              items:
+                $ref: '#/components/schemas/ContactResponse'
+            resultsTotalCount:
+              description: Number of Contact with condition
+              type: integer
+              format: int64
+              example: 1000
+    ContactDeleteResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Message of the delete Contact
+          type: string
+          example: 'OK'
+    BookingCreateRequest:
+      type: object
+      required:
+        - propertyId
+        - bookingDate
+        - createUserId
+      properties:
+        propertyId:
+          description: ID of property to booking
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        bookingDate:
+          description: Date time booking
+          type: string
+          example: '123456'
+          pattern: '^([12]\d{3})\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))$'
+        createUserId:
+          description: ID of user to create booking
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        note:
+          description: Note of booking
+          type: string
+          example: 'xxxxx'
+          maxLength: 4000
+    BookingCreateResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Message of the create Booking
+          type: string
+          example: 'OK'
+    BookingGetResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingResponse'
+    BookingResponse:
+      type: object
+      properties:
+        bookingId:
+          description: ID of Booking
+          type: string
+          example: '123456'
+        propertyId:
+          description: ID of Property in booking
+          type: string
+          example: '123456'
+        propertyTitle:
+          description: title of property
+          type: string
+          example: 'xxxxx'
+        propertyOwnerId:
+          description: ID Owner of property
+          type: string
+          example: 'xxxxx'
+        propertyOwnerName:
+          description: Name Owner of property
+          type: string
+          example: 'xxxxx'
+        propertyOwnerPhone:
+          description: Phone Owner of property
+          type: string
+          example: 'xxxxx'
+        propertyOwnerEmail:
+          description: Email Owner of property
+          type: string
+          example: 'xxxxx'
+        bookingDate:
+          description: Date of Booking
+          type: string
+          example: '123456'
+        note:
+          description: Note of Booking
+          type: string
+          example: '123456'
+        approveStatus:
+          description: Approve Status of Booking
+          type: string
+          example: '123456'
+        createUserId:
+          description: ID of user create Booking
+          type: string
+          example: '123456'
+        createUserName:
+          description: Name of user create Booking
+          type: string
+          example: '123456'
+        bookingUserPhone:
+          description: Phone User booking property
+          type: string
+          example: 'xxxxx'
+        bookingUserEmail:
+          description: Email User booking property
+          type: string
+          example: 'xxxxx'
+        createDatetime:
+          description: Time create Booking
+          type: string
+          example: '123456'
+        lastupUserId:
+          description: ID of user update Booking
+          type: string
+          example: '123456'
+        lastupUserName:
+          description: Name of user update Booking
+          type: string
+          example: '123456'
+        lastupDatetime:
+          description: Time update Booking
+          type: string
+          example: '123456'
+    SearchBookingRequest:
+      x-custom-validate:
+        date-range:
+          - from: 'createDatetimeFrom'
+            to: 'createDatetimeTo'
+          - from: 'bookingDateFrom'
+            to: 'bookingDateTo'
+      type: object
+      properties:
+        propertyOwnerId:
+          description: ID of user is Owner property has booking
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        createUserId:
+          description: ID of user is booking
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        bookingDateFrom:
+          description: Date time booking property
+          type: string
+          example: '123456'
+          pattern: '^([12]\d{3})\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))$'
+        bookingDateTo:
+          description: Date time create property
+          type: string
+          example: '123456'
+          pattern: '^([12]\d{3})\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))$'
+        createDatetimeFrom:
+          description: Date time create booking
+          type: string
+          example: '123456'
+          pattern: '^([12]\d{3})\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))$'
+        createDatetimeTo:
+          description: Date time create booking
+          type: string
+          example: '123456'
+          pattern: '^([12]\d{3})\/(0[1-9]|1[0-2])\/(0[1-9]|1\d|2[0-8]|29(?=\/\d\d\/(?!1[01345789]00|2[1235679]00)\d\d(?:[02468][048]|[13579][26]))|30(?!\/02)|31(?=\/0[13578]|\/1[02]))$'
+        propertyTitle:
+          description: Title of property
+          type: string
+          example: 'xxxxx'
+          maxLength: 4000
+        approveStatus:
+          description: approve Status of booking
+          type: string
+          pattern: '^(0|1|2)$'
+          maxLength: 1
+          example: '1'
+        offset:
+          description: The offset rows before beginning to return the rows
+          type: integer
+          format: int32
+          minimum: 0
+          example: 1
+        limit:
+          description: The number of rows
+          type: integer
+          format: int32
+          minimum: 1
+          example: 20
+    SearchBookingResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        results:
+          type: object
+          properties:
+            resultsTotalCount:
+              description: Number of booking with condition
+              type: integer
+              format: int64
+              example: 1000
+            bookings:
+              description: Booking list
+              type: array
+              items:
+                $ref: '#/components/schemas/BookingResponse'
+    BookingUpdateRequest:
+      type: object
+      required:
+        - bookingId
+        - lastupUserId
+        - approveStatus
+      properties:
+        bookingId:
+          description: ID of booking
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+        approveStatus:
+          description: approve Status of booking
+          type: string
+          pattern: '^(0|1|2)$'
+          maxLength: 1
+          example: '1'
+        lastupUserId:
+          description: ID of user to update booking
+          type: string
+          example: '123456'
+          pattern: '^[0-9]{1,19}$'
+    BookingUpdateResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Message of the update Booking
+          type: string
+          example: 'OK'
+    BookingDeleteResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          example: 200
+        message:
+          description: Message of the delete Booking
           type: string
           example: 'OK'
   responses:

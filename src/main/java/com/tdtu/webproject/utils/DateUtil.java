@@ -9,7 +9,6 @@ import java.time.format.ResolverStyle;
 
 public class DateUtil {
     public static final String YYYYMMDD_FORMAT_SLASH = "uuuu/MM/dd";
-    public static final String DDMMYYYY_FORMAT_SLASH = "dd/MM/uuuu";
     public static final String DATETIME_FORMAT_SLASH = "uuuu/MM/dd HH:mm:ss";
 
     public static LocalDateTime getTimeNow() {
@@ -39,5 +38,10 @@ public class DateUtil {
 
     public static LocalDateTime parseLocalDateTime(@NonNull LocalDate target) {
         return target.atStartOfDay();
+    }
+
+    public static boolean isValidDateTime(@NonNull LocalDateTime target) {
+        return target.isAfter(DateUtil.getTimeNow())
+                && target.isBefore(DateUtil.getTimeNow().plusMonths(1));
     }
 }

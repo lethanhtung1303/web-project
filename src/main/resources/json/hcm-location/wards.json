@@ -1,0 +1,82 @@
+[
+    {
+        "code": "27466",
+        "parent_code": "778",
+        "name_with_type": "Phường Tân Thuận Đông",
+        "path_with_type": "Phường Tân Thuận Đông, Quận 7, Thành phố Hồ Chí Minh",
+        "lat": "10.745084",
+        "lng": "106.7316294"
+    },
+    {
+        "code": "27469",
+        "parent_code": "778",
+        "name_with_type": "Phường Tân Thuận Tây",
+        "path_with_type": "Phường Tân Thuận Tây, Quận 7, Thành phố Hồ Chí Minh",
+        "lat": "10.7512009",
+        "lng": "106.7222141"
+    },
+    {
+        "code": "27472",
+        "parent_code": "778",
+        "name_with_type": "Phường Tân Kiểng",
+        "path_with_type": "Phường Tân Kiểng, Quận 7, Thành phố Hồ Chí Minh",
+        "lat": "10.7483856",
+        "lng": "106.7103306"
+    },
+    {
+        "code": "27475",
+        "parent_code": "778",
+        "name_with_type": "Phường Tân Hưng",
+        "path_with_type": "Phường Tân Hưng, Quận 7, Thành phố Hồ Chí Minh",
+        "lat": "10.7443009",
+        "lng": "106.6984702"
+    },
+    {
+        "code": "27478",
+        "parent_code": "778",
+        "name_with_type": "Phường Bình Thuận",
+        "path_with_type": "Phường Bình Thuận, Quận 7, Thành phố Hồ Chí Minh",
+        "lat": "10.7414034",
+        "lng": "106.7228795"
+    },
+    {
+        "code": "27481",
+        "parent_code": "778",
+        "name_with_type": "Phường Tân Quy",
+        "path_with_type": "Phường Tân Quy, Quận 7, Thành phố Hồ Chí Minh",
+        "lat": "10.7421633",
+        "lng": "106.709907"
+    },
+    {
+        "code": "27484",
+        "parent_code": "778",
+        "name_with_type": "Phường Phú Thuận",
+        "path_with_type": "Phường Phú Thuận, Quận 7, Thành phố Hồ Chí Minh",
+        "lat": "10.7294201",
+        "lng": "106.7348597"
+    },
+    {
+        "code": "27487",
+        "parent_code": "778",
+        "name_with_type": "Phường Tân Phú",
+        "path_with_type": "Phường Tân Phú, Quận 7, Thành phố Hồ Chí Minh",
+        "lat": "10.7253014",
+        "lng": "106.7263423"
+    },
+    {
+        "code": "27490",
+        "parent_code": "778",
+        "name_with_type": "Phường Tân Phong",
+        "path_with_type": "Phường Tân Phong, Quận 7, Thành phố Hồ Chí Minh",
+        "lat": "10.7294979",
+        "lng": "106.7031187"
+    },
+    {
+        "code": "27493",
+        "parent_code": "778",
+        "name_with_type": "Phường Phú Mỹ",
+        "path_with_type": "Phường Phú Mỹ, Quận 7, Thành phố Hồ Chí Minh",
+        "lat": "10.7081633",
+        "lng": "106.7382681"
+    }
+]

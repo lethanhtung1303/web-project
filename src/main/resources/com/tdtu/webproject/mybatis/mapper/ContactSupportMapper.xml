@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdtu.webproject.mybatis.mapper.ContactSupportMapper">
+    <resultMap id="BaseResultMap" type="com.tdtu.webproject.mybatis.result.ContactSearchResult">
+        <id column="CONTACT_ID" jdbcType="NUMERIC" property="contactId" />
+        <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+        <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+        <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+        <result column="APPROVE_STATUS" jdbcType="VARCHAR" property="approveStatus" />
+        <result column="HANDLER_ID" jdbcType="NUMERIC" property="handlerId" />
+        <result column="CREATE_DATETIME" jdbcType="TIMESTAMP" property="createDatetime" />
+        <result column="LASTUP_USER_ID" jdbcType="NUMERIC" property="lastupUserId" />
+        <result column="LASTUP_DATETIME" jdbcType="TIMESTAMP" property="lastupDatetime" />
+    </resultMap>
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT
+            CONTACT_ID,
+            CONTENT,
+            EMAIL,
+            PHONE,
+            APPROVE_STATUS,
+            HANDLER_ID,
+            CREATE_DATETIME,
+            LASTUP_USER_ID,
+            LASTUP_DATETIME
+        FROM (
+            SELECT
+                TC.CONTACT_ID,
+                TC.CONTENT,
+                TC.EMAIL,
+                TC.PHONE,
+                TC.APPROVE_STATUS,
+                TC.HANDLER_ID,
+                TC.CREATE_DATETIME,
+                TC.LASTUP_USER_ID,
+                TC.LASTUP_DATETIME,
+                ROW_NUMBER() OVER (ORDER BY TC.CONTACT_ID) AS RN
+                FROM
+                    TDT_CONTACT TC
+                WHERE
+                    TC.IS_DELETED = '0'
+                <if test="(contactId != null and contactId != '')">
+                    AND TC.CONTACT_ID = ${contactId}
+                </if>
+                <if test="(email != null and email != '')">
+                    AND UPPER(TC.EMAIL) LIKE UPPER('%${email}%')
+                </if>
+                <if test="(content != null and content != '')">
+                    AND UPPER(TC.CONTENT) LIKE UPPER('%${content}%')
+                </if>
+                <if test="(phone != null and phone != '')">
+                    AND UPPER(TC.PHONE) LIKE UPPER('%${phone}%')
+                </if>
+
+                <choose>
+                    <when test="createDatetimeFrom != null and createDatetimeTo != null">
+                        and TC.CREATE_DATETIME BETWEEN #{createDatetimeFrom} AND #{createDatetimeTo}
+                    </when>
+                    <when test="createDatetimeFrom != null">
+                        and TC.CREATE_DATETIME >= #{createDatetimeFrom}
+                    </when>
+                    <when test="createDatetimeTo != null">
+                        and TC.CREATE_DATETIME <![CDATA[ <= ]]> #{createDatetimeTo}
+                    </when>
+                </choose>
+                <if test="(approveStatus != null and approveStatus != '')">
+                    AND TC.APPROVE_STATUS = '${approveStatus}'
+                </if>
+        ) Temp
+        <if test="(offset != null and limit != null)">
+            WHERE Temp.RN > #{offset}
+            AND Temp.RN <![CDATA[ <= ]]> #{offset} + #{limit}
+        </if>
+        ORDER BY CONTACT_ID
+    </select>
+
+    <select id="count" resultType="java.lang.Long">
+        SELECT
+            COUNT(*) AS RESULTS_TOTAL_COUNT
+        FROM
+            TDT_CONTACT TC
+        WHERE
+            TC.IS_DELETED = '0'
+        <if test="(contactId != null and contactId != '')">
+            AND TC.CONTACT_ID = ${contactId}
+        </if>
+        <if test="(email != null and email != '')">
+            AND UPPER(TC.EMAIL) LIKE UPPER('%${email}%')
+        </if>
+        <if test="(content != null and content != '')">
+            AND UPPER(TC.CONTENT) LIKE UPPER('%${content}%')
+        </if>
+        <if test="(phone != null and phone != '')">
+            AND UPPER(TC.PHONE) LIKE UPPER('%${phone}%')
+        </if>
+
+        <choose>
+            <when test="createDatetimeFrom != null and createDatetimeTo != null">
+                and TC.CREATE_DATETIME BETWEEN #{createDatetimeFrom} AND #{createDatetimeTo}
+            </when>
+            <when test="createDatetimeFrom != null">
+                and TC.CREATE_DATETIME >= #{createDatetimeFrom}
+            </when>
+            <when test="createDatetimeTo != null">
+                and TC.CREATE_DATETIME <![CDATA[ <= ]]> #{createDatetimeTo}
+            </when>
+        </choose>
+        <if test="(approveStatus != null and approveStatus != '')">
+            AND TC.APPROVE_STATUS = '${approveStatus}'
+        </if>
+    </select>
+</mapper>

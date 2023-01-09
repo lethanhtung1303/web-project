@@ -224,7 +224,7 @@ public class UserService {
 
     public String deleteUser(String userId) {
         BigDecimal id = NumberUtil.toBigDeimal(userId).orElse(null);
-        if (Optional.ofNullable(userId).isPresent()){
+        if (Optional.ofNullable(id).isPresent()){
             if (!userManageService.checkExistUser(id) && !userManageService.checkExistUserInfo(id)){
                 throw new BusinessException("Not found user!");
             }
